@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "com.phonegap.MemorizeMe"
+        versionCode = "0.1.0" >
+    <name>Memorize Me</name>
+    <description>A digital scripture memory system</description>
+    <author>Frank Lockerman</author>
+		<gap:plugin name="org.apache.cordova.media" version="0.2.8" />
+</widget>
