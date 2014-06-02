@@ -1,0 +1,48 @@
+.body {
+	background-color: black;
+	font-family: Verdana, Geneva, sans-serif;
+}
+.container {
+	overflow-y: scroll;
+}
+.versecontainer {
+	width: 100%;
+}
+.header {
+	background-color: blue;
+	color: white;
+	font-family: Verdana, Geneva, sans-serif;
+	text-align: center;
+	width: 100%;
+	height: 30px;
+	font-size: 23px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.menu {
+	height: 16px;
+	position: relative;
+	left: 97%;
+	top: -7px;
+}
+.footer {
+	position: relative;
+	width: 100%;
+	top: 0px;
+	margin-top: 0px;
+}
+@media all and (max-width: 640px) {
+	.menu {
+		height: 25px;
+		position: absolute;
+		left: 90%;
+		top: 19%;
+	}
+	.navimg {
+		width: 25px;
+		height: 25px;
+	}
+	.navtext {
+		font-size: 7px;
+	}
+}

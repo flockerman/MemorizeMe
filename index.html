@@ -11,76 +11,22 @@
 		window.jQuery || document.write('<script src="assets/jquery-1.11.0.min.js">\x3C/script>')
 	</script>
 	<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
 	<script src="verseapp.js"></script>
-	<style>
-		.body {
-			background-color: black;
-			font-family: Verdana, Geneva, sans-serif;
-		}
-		.container {
-			overflow-y: scroll;
-		}
-		.versecontainer {
-			width: 100%;
-		}
-		.header {
-			background-color: blue;
-			color: white;
-			font-family: Verdana, Geneva, sans-serif;
-			text-align: center;
-			width: 100%;
-			height: 30px;
-			font-size: 23px;
-			padding-top: 10px;
-			padding-bottom: 10px;		
-		}
-		.menu {
-			height: 16px;
-			position: relative;
-			left: 97%;
-			top: -7px;
-		}
-		.footer {
-			position: relative;
-			width: 100%;
-			top: 0px;
-			margin-top: 0px;
-		}
-		@media all and (max-width: 640px) {
-			.menu {
-				height: 25px;
-				position: absolute;
-				left: 90%;
-				top: 19%;
-			}
-			.navimg {
-				width: 25px;
-				height: 25px;
-			}
-			.navtext {
-				font-size: 7px;
-			}
-		}
-	</style>
 	<script>
-		$(document).ready(function() {
-				loadVerses('SummerPack.json', 'jsoncache');
-			});
-											
-		function fixHeight() {
-			var newHeight = window.innerHeight - 50 - $("#knownButton").height() - 26.22 + "px"; //subtract the header, nav size, and padding for nav
-			$(".versecontainer").css("height", newHeight);
-		}
-
-		
+		$(document).ready(function () {
+			loadVerses('SummerPack.json', 'jsoncache');
+		});
 	</script>
 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+	<link rel="stylesheet" href="verse.css">
 </head>
 
 <body class="body" onload="">
 	<div id="header" class="header">Olympians 2015 HCSB</div>
-	<div id="testButton" style="position: absolute; top: -10px; right: -10px; padding-left: 20px"><button class="ui-btn ui-btn-inline" style="padding-left: 30px; padding-right: 30px; height: 52px;">Test</button></div>
+	<div id="testButton" style="position: absolute; top: -10px; right: -10px; padding-left: 20px">
+		<button class="ui-btn ui-btn-inline" style="padding-left: 30px; padding-right: 30px; height: 52px;">Test</button>
+	</div>
 	<div id="container" class="container">
 		<div class="versecontainer" id="versecontainer"></div>
 	</div>
