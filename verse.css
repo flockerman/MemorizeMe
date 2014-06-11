@@ -9,8 +9,8 @@
 	width: 100%;
 }
 .header {
-	background-color: blue;
-	color: white;
+	background-color: #09165C;
+	color: #F2CE61;
 	font-family: Verdana, Geneva, sans-serif;
 	text-align: center;
 	width: 100%;
@@ -30,6 +30,11 @@
 	width: 100%;
 	top: 0px;
 	margin-top: 0px;
+}
+.testButton {
+	position: absolute;
+	top: -5px;
+	right: 5px;
 }
 @media all and (max-width: 640px) {
 	.menu {
