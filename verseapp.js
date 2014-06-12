@@ -1,7 +1,10 @@
 /*******************************
  * Global Variables
  *******************************/
-var json;
+var json; //Eliminates redundant server calls by globally caching the data
+
+//configuration
+var stockPack = "SummerPack.json" //url to stock pack to be used
 
 /*******************************
  * Helper Prototypes
@@ -38,6 +41,7 @@ function loadVerses(location, storageName) {
 			} else {*/
 
 			populate(storageName);
+			return json;
 		}
 	})
 }
@@ -71,14 +75,17 @@ function populate(storageName) {
 
 		//Check if the user is authorized to add verses to this pack
 		if (jsonObject.userPack == "true") {
-			$("#versecontainer").append('<a href="#" class="ui-btn ui-icon-delete ui-btn-icon-right">Add a Verse</a>').trigger('create');
-		} else {
-
+			$("#versecontainer").append('<a href="#" class="ui-btn ui-icon-delete ui-btn-icon-right ui-icon-plus">Add a Verse</a>').trigger('create');
 		}
 
 		fixHeight(); //redraw the interface
 
 	} else { //Catch the error if the data is missing. Alert the user.
+
+		/** TODO *********
+		 * Attach to a nicer user alert interface for mobile devices
+		 *****************/
+
 		alert("There appears to be no data loaded. Please restart the app and try again.");
 	}
 }
@@ -101,7 +108,42 @@ function addVerse(storageName) {
 	} else {
 		var holder = '{"verse":[{"text":"' + $("#verseInput").val() + '","reference":"' + $("#versionInput").val() + '","version":"' + $("#versionInput").val() + '"}]}';
 		localStorage.setItem('userAdded', holder);
-
 	}
+}
 
+
+/************************************
+ * function initializeApp()
+ * Initialize the app for first time use and more
+ ************************************/
+
+function initializeApp() {
+
+	// verify required settings are present
+	if (!localStorage["packList"]) {
+		$.ajax({
+			url: stockPack,
+			dataType: "text",
+			success: function (data) {
+
+				//initialize for first use
+				json = JSON.parse(data);
+				localStorage.setObject('currentPack', json);
+
+				// Create the pack list default settings
+				var systemname = json.packName.replace(/ /g, '');
+				localStorage.packList = '{"defaultPack":"' + systemname + '","packs": [{"userName": "' + json.packName + '","systemName": "' + systemname + '"}]}';
+
+				//run first use if needed
+				if (!localStorage["firstUse"]) {
+					localStorage.firstUse = true;
+				} else { //catch Errors
+					alert("Something went wrong with the stored data. Please resync your data.");
+				}
+				populate("currentPack"); //update user
+			}
+		})
+	} else { //required files exist, proceed with display
+		populate('currentPack');
+	}
 }

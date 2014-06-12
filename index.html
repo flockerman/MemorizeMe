@@ -14,7 +14,7 @@
 	<script src="verseapp.js"></script>
 	<script>
 		$(document).ready(function () {
-			loadVerses('SummerPack.json', 'jsoncache');
+			initializeApp();
 		});
 	</script>
 
@@ -23,18 +23,18 @@
 </head>
 
 <body class="body" onload="">
-<!-- Header -->
+	<!-- Header -->
 	<div id="header" class="header">Olympians 2015 HCSB</div>
 	<div id="testButtonContainer" class="testButton">
 		<button id="testButton" class="ui-btn ui-corner-all" style="padding-left: 30px; padding-right: 30px; height: 44px;">Test</button>
 	</div>
 
-<!-- Main App -->
+	<!-- Main App -->
 	<div id="container" class="container">
 		<div class="versecontainer" id="versecontainer"></div>
 	</div>
 
-<!-- Footer -->
+	<!-- Footer -->
 	<div id="footer" class="footer">
 		<button class="ui-btn" id="knownButton" style="width: 20%; float: left; margin: 0px; 0px;">
 			<img src="assets/known.png" class="navimg" />
