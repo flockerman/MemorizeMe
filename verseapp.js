@@ -71,7 +71,7 @@ function populate(storageName) {
 		}
 
 		// Update the pack name on the screen
-		$("#header").html(jsonObject.packName);
+		$("#headerText").html(jsonObject.packName);
 
 		//Check if the user is authorized to add verses to this pack
 		if (jsonObject.userPack == "true") {

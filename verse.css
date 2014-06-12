@@ -31,10 +31,18 @@
 	top: 0px;
 	margin-top: 0px;
 }
+.testButtonContainer {
+	position: absolute;
+	top: -5px;
+	right: 5px;
+}
 .testButton {
 	position: absolute;
 	top: -5px;
 	right: 5px;
+	padding-left: 30px;
+	padding-right: 30px;
+	height: 44px;
 }
 @media all and (max-width: 640px) {
 	.menu {
@@ -49,5 +57,28 @@
 	}
 	.navtext {
 		font-size: 7px;
+	}
+	.header {
+		background-color: #09165C;
+		color: #F2CE61;
+		font-family: Verdana, Geneva, sans-serif;
+		text-align: left;
+		padding-left: 25px;
+		width: 100%;
+		height: 30px;
+		font-size: 18px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	.headerText {
+		padding-top: 2px;
+	}
+	.testButton {
+		position: absolute;
+		top: -5px;
+		right: 5px;
+		padding-left: 30px;
+		padding-right: 30px;
+		height: 44px;
 	}
 }
