@@ -76,9 +76,9 @@ function populate(storageName, packSectionName) {
 		//Check if the user is authorized to add verses to this pack
 		if (jsonObject.userPack == "true") {
 			$("#versecontainer").append('<a href="#" id="addVerseButton" class="ui-btn ui-icon-delete ui-btn-icon-right ui-icon-plus" onclick="window.location=addVerse.html">Add a Verse</a>').trigger('create');
-			/*$('#addVerseButton').click(function(){
+			$('#addVerseButton').click(function(){
 			  window.location.href= "addVerse.html";
-			});*/
+			});
 		}
 
 		fixHeight(); //redraw the interface
@@ -98,7 +98,7 @@ function populate(storageName, packSectionName) {
  * function addVerse()
  * Adds a verse to the verse pack
      = storageName: localStorage name to store the new data under.
- ************************************
+ *************************************/
 function addVerse(storageName) {
 	if (localStorage[storageName]) {
 		var json = JSON.parse(localStorage[storageName])
@@ -113,7 +113,6 @@ function addVerse(storageName) {
 		localStorage.setItem('userAdded', holder);
 	}
 }
-*/
 
 /************************************
  * function initializeApp()
