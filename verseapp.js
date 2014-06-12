@@ -77,7 +77,7 @@ function populate(storageName, packSectionName) {
 		if (jsonObject.userPack == "true") {
 			$("#versecontainer").append('<a href="#" id="addVerseButton" class="ui-btn ui-icon-delete ui-btn-icon-right ui-icon-plus" onclick="window.location=addVerse.html">Add a Verse</a>').trigger('create');
 			$('#addVerseButton').click(function(){
-			  window.location = 'addVerse.html';
+			  window.location.replace("addVerse.html");
 			});
 		}
 
