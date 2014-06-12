@@ -61,13 +61,13 @@ function fixHeight() {
  * Parse the JSON object and populate the app with data.
  *   = storageName: name of localStorage array to load
  ******************************/
-function populate(storageName) {
+function populate(storageName, packSectionName) {
 	if (localStorage[storageName]) { //Check that the data loaded properly
 		jsonObject = JSON.parse(localStorage[storageName]);
 
 		//generate the verses for this pack
-		for (var key in jsonObject.verse) {
-			$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject.verse[key].reference + '</center><a onclick=""><img src="assets/menu.png" class="menu" /></a></h4><p>' + jsonObject.verse[key].text + '</p></div>').trigger('create');
+		for (var key in jsonObject[packSectionName]) {
+			$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject[packSectionName][key].reference + '</center><a onclick=""><img src="assets/menu.png" class="menu" /></a></h4><p>' + jsonObject[packSectionName][key].text + '</p></div>').trigger('create');
 		}
 
 		// Update the pack name on the screen
@@ -75,7 +75,10 @@ function populate(storageName) {
 
 		//Check if the user is authorized to add verses to this pack
 		if (jsonObject.userPack == "true") {
-			$("#versecontainer").append('<a href="#" class="ui-btn ui-icon-delete ui-btn-icon-right ui-icon-plus">Add a Verse</a>').trigger('create');
+			$("#versecontainer").append('<a href="#" id="addVerseButton" class="ui-btn ui-icon-delete ui-btn-icon-right ui-icon-plus" onclick="window.location=addVerse.html">Add a Verse</a>').trigger('create');
+			$('#addVerseButton').click(function(){
+			  window.location = 'addVerse.html';
+			});
 		}
 
 		fixHeight(); //redraw the interface
@@ -140,10 +143,10 @@ function initializeApp() {
 				} else { //catch Errors
 					alert("Something went wrong with the stored data. Please resync your data.");
 				}
-				populate("currentPack"); //update user
+				populate("currentPack", "working"); //update user
 			}
 		})
 	} else { //required files exist, proceed with display
-		populate('currentPack');
+		populate('currentPack','working');
 	}
 }

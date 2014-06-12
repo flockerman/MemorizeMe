@@ -1,5 +1,7 @@
 {
-    "verse": [
+    "packName": "Summer Pack HCSV",
+    "known": [],
+    "working": [
         {
             "text": "When I became embittered and my innermost being was wounded, I was stupid and didn’t understand; I was an unthinking animal toward You.",
             "reference": "Psalm 73:21-22"
@@ -29,6 +31,7 @@
             "reference": "Psalm 15:5"
         }
     ],
-    "packName": "Summer Pack HCSV",
-    "userPack": "true"
+    "other": [],
+    "userPack": "true",
+    "version": "HCSV"
 }
