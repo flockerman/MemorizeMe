@@ -4,7 +4,7 @@
 var json; //Eliminates redundant server calls by globally caching the data
 
 //configuration
-var stockPack = "SummerPack.json" //url to stock pack to be used
+var stockPack = "SummerPack.json"; //url to stock pack to be used
 
 /*******************************
  * Helper Prototypes
