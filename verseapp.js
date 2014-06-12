@@ -98,7 +98,7 @@ function populate(storageName, packSectionName) {
  * function addVerse()
  * Adds a verse to the verse pack
      = storageName: localStorage name to store the new data under.
- *************************************/
+ ************************************
 function addVerse(storageName) {
 	if (localStorage[storageName]) {
 		var json = JSON.parse(localStorage[storageName])
@@ -113,7 +113,7 @@ function addVerse(storageName) {
 		localStorage.setItem('userAdded', holder);
 	}
 }
-
+*/
 
 /************************************
  * function initializeApp()
