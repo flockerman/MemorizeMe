@@ -13,31 +13,25 @@
 			initializeApp();
 
 			$("#menu_Edit").click(function () {
-				doSomething();
+				//
 			});
 
 			$("#menu_Share").click(function () {
-				doSomething();
+				//
 			});
 
 			$("#menu_Move").click(function () {
-				doSomething();
+				//
 			});
 
 
 			$("#menu_Delete").click(function () {
-				doSomething();
+				//eventually throw confirmation box 
+				removeVerse("currentPack", packSection, verseNumber);
+				$('#popupMenu').popup("close");
+				
 			});
 		});
-
-		function doSomething() { // do something when menu item is clicked
-			alert("Verse " + verseNumber + " clicked!");
-		}
-
-		function toggleMenu(num) { // Pop up menu 
-			$('#popupMenu').popup("open");
-			verseNumber = num;
-		};
 	</script>
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">

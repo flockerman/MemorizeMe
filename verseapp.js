@@ -3,7 +3,7 @@
  *******************************/
 
 var json; //Eliminates redundant server calls by globally caching the data
-var verseNumber;
+var verseNumber, packSection;
 
 //configuration
 var stockPack = "SummerPack.json"; //url to stock pack to be used
@@ -65,6 +65,7 @@ function fixHeight() {
  * function populate()
  * Parse the JSON object and populate the app with data.
  *   = storageName: name of localStorage array to load
+ *   = packSectionName: which section of the pack should be loaded?
  ******************************/
 function populate(storageName, packSectionName) {
 	if (localStorage[storageName]) { //Check that the data loaded properly
@@ -72,7 +73,7 @@ function populate(storageName, packSectionName) {
 
 		//generate the verses for this pack
 		for (var key in jsonObject[packSectionName]) {
-			$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject[packSectionName][key].reference + '</center><a onclick="toggleMenu('+ jsonObject[packSectionName][key].id +'); "><img src="assets/menu.png" class="menu" /></a></h4><p>' + jsonObject[packSectionName][key].text + '</p></div>').trigger('create');
+			$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject[packSectionName][key].reference + '</center><a onclick="toggleMenu(' + jsonObject[packSectionName][key].id + '); "><img src="assets/menu.png" class="menu" /></a></h4><p>' + jsonObject[packSectionName][key].text + '</p></div>').trigger('create');
 		}
 
 		// Update the pack name on the screen
@@ -157,9 +158,46 @@ function initializeApp() {
 		})
 	} else { //required files exist, proceed with display
 		populate('currentPack', 'working');
+		packSection = "working"; // update current section in use
 	}
 }
 
-function verseOptions() {
 
+
+/*****************************************
+ * function toggleMenu()
+ * Displays the popup menu for the verses
+ *****************************************/
+
+function toggleMenu(num) { // Pop up menu 
+	$('#popupMenu').popup("open");
+	verseNumber = num;
+};
+
+function clearScreen() {
+	$("#versecontainer").empty();
+}
+
+
+
+/****************************************
+ * function removeVerse()
+ * Removes a verse a pack
+   = storageName: name of the pack being edited
+	 = packSectionName: name of the section being edited
+	 = idNumber: "id" of verse that is being edited
+ ****************************************/
+
+function removeVerse(storageName, packSectionName, idNumber) {
+
+	var jsonObject = JSON.parse(localStorage[storageName]);
+	for (var key in jsonObject[packSectionName]) {
+		if (jsonObject[packSectionName][key].id == idNumber) {
+			jsonObject[packSectionName].splice(key, 1);
+		} else continue
+	}
+
+	localStorage[storageName] = JSON.stringify(jsonObject);
+	clearScreen();
+	populate(storageName, packSectionName);
 }
