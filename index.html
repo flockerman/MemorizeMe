@@ -5,17 +5,39 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script>
-		// Fallback for jQuery
-		window.jQuery || document.write('<script src="assets/jquery-1.11.0.min.js">\x3C/script>')
-	</script>
-	<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+	<script src="assets/jquery-1.11.0.min.js"></script>
+	<script src="assets/jquery.mobile-1.4.2.min.js"></script>
 	<script src="verseapp.js"></script>
 	<script>
 		$(document).ready(function () {
 			initializeApp();
+
+			$("#menu_Edit").click(function () {
+				doSomething();
+			});
+
+			$("#menu_Share").click(function () {
+				doSomething();
+			});
+
+			$("#menu_Move").click(function () {
+				doSomething();
+			});
+
+
+			$("#menu_Delete").click(function () {
+				doSomething();
+			});
 		});
+
+		function doSomething() { // do something when menu item is clicked
+			alert("Verse " + verseNumber + " clicked!");
+		}
+
+		function toggleMenu(num) { // Pop up menu 
+			$('#popupMenu').popup("open");
+			verseNumber = num;
+		};
 	</script>
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
@@ -24,7 +46,9 @@
 
 <body class="body" onload="">
 	<!-- Header -->
-	<div id="header" class="header"><div id="headerText" class="headerText">Olympians 2015 HCSB</div></div>
+	<div id="header" class="header">
+		<div id="headerText" class="headerText">Olympians 2015 HCSB</div>
+	</div>
 	<div id="testButtonContainer" class="testButtonContainer">
 		<button id="testButton" class="ui-btn ui-corner-all">Test</button>
 	</div>
@@ -32,6 +56,20 @@
 	<!-- Main App -->
 	<div id="container" class="container">
 		<div class="versecontainer" id="versecontainer"></div>
+		<div data-role="popup" id="popupMenu" data-theme="a">
+			<ul data-role="listview" data-inset="true" style="min-width:210px;">
+				<li data-role="list-divider">Verse Menu</li>
+				<li><a id="menu_Edit">Edit Verse</a>
+				</li>
+				<li><a id="menu_Share">Share Verse</a>
+				</li>
+				<li><a id="menu_Move">Move Verse</a>
+				</li>
+				<li><a id="menu_Delete">Delete Verse</a>
+				</li>
+			</ul>
+		</div>
+
 	</div>
 
 	<!-- Footer -->
