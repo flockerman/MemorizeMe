@@ -28,11 +28,14 @@
 
 
 		function addpack() {
+			// verify that all required information is available
 			if ($("#packInput").val() == "" || $("#versionInput").val() == "" || $("#verseInput").val() == "" || $("#referenceInput").val() == "") {
 
 				alert("All fields are required. Please complete the whole form before adding a pack.");
 
-			} else {
+			} 
+			// all required info exists, process adding the pack
+			else {
 				var username = $("#packInput").val();
 				var systemname = $("#packInput").val().replace(/ /g, '');
 

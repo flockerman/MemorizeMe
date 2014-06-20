@@ -3,10 +3,11 @@
  *******************************/
 
 var json; //Eliminates redundant server calls by globally caching the data
-var verseNumber;
-var debug = false;
+var verseNumber; //used to easily pass "id" numbers for functions
+var debug = false; //turn on debugging
+
 //configuration
-var stockPack = "SummerPack.json"; //url to stock pack to be used
+var stockPack = "SummerPack.json"; //url to the stock pack that comes with the app
 
 /*******************************
  * Helper Prototypes
@@ -53,13 +54,12 @@ function loadVerses(location, storageName) {
  * function fixHeight()
  * Redraws the interface after calculating the exact measurments. Guarentees a beautiful interface on every device.
  ******************************/
+
 function fixHeight() {
 	//subtract the header, nav size, padding for nav, and jqueryMobile menus that are hidden
 	var newHeight = window.innerHeight - 50 - $("#knownButton").height() - 26.22 - 40 + "px";
 	$(".versecontainer").css("height", newHeight);
 }
-
-
 
 
 /******************************
@@ -68,6 +68,7 @@ function fixHeight() {
  *   = storageName: name of localStorage array to load
  *   = packSectionName: which section of the pack should be loaded?
  ******************************/
+
 function populate(storageName, packSectionName) {
 	if (localStorage[storageName]) { //Check that the data loaded properly
 		jsonObject = JSON.parse(localStorage[storageName]);
@@ -83,6 +84,8 @@ function populate(storageName, packSectionName) {
 		//Check if the user is authorized to add verses to this pack
 		if (jsonObject.userPack == "true") {
 			$("#versecontainer").append('<a href="#" id="addVerseButton" class="ui-btn ui-icon-delete ui-btn-icon-right ui-icon-plus" onclick="window.location=addVerse.html">Add a Verse</a>').trigger('create');
+
+			// bind a click event to the newly generated button
 			$('#addVerseButton').click(function () {
 				window.location.href = "addVerse.html";
 			});
@@ -91,38 +94,10 @@ function populate(storageName, packSectionName) {
 		fixHeight(); //redraw the interface
 
 	} else { //Catch the error if the data is missing. Alert the user.
-
-		/** TODO *********
-		 * Attach to a nicer user alert interface for mobile devices
-		 *****************/
-
 		alert("There appears to be no data loaded. Please restart the app and try again.");
 	}
 }
 
-
-
-
-
-/*************************************
- * function addVerse()
- * Adds a verse to the verse pack
-     = storageName: localStorage name to store the new data under.
- *************************************/
-function addVerse(storageName) {
-	if (localStorage[storageName]) {
-		var json = JSON.parse(localStorage[storageName])
-		json.verse.push({
-			text: $("#verseInput").val(),
-			reference: $("#versionInput").val(),
-			version: $("#versionInput").val()
-		});
-		localStorage.setItem('userAdded', JSON.stringify(json));
-	} else {
-		var holder = '{"verse":[{"text":"' + $("#verseInput").val() + '","reference":"' + $("#versionInput").val() + '","version":"' + $("#versionInput").val() + '"}]}';
-		localStorage.setItem('userAdded', holder);
-	}
-}
 
 /************************************
  * function initializeApp()
@@ -145,10 +120,12 @@ function initializeApp() {
 				localStorage.packList = '{"defaultPack":"' + systemname + '","packs": [{"userName": "' + json.packName + '","systemName": "' + systemname + '","id":"1"}]}';
 				localStorage["currentPack"] = systemname;
 				localStorage["currentSection"] = "working";
-				populate(systemname, "working"); //update user
+				populate(systemname, "working"); //update users screen
 			}
 		})
 	} else { //required files exist, proceed with display
+
+		//process a pack change
 		if (localStorage["changePack"]) {
 			if (debug) {
 				console.log("Pack changed to " + localStorage["changePack"]);
@@ -156,16 +133,20 @@ function initializeApp() {
 			populate(localStorage["changePack"], localStorage["currentSection"]);
 			localStorage.currentPack = localStorage["changePack"];
 			localStorage.removeItem("changePack");
-		} else if (localStorage["currentPack"]) {
+
+		}
+		// process the current pack selected
+		else if (localStorage["currentPack"]) {
 			populate(localStorage["currentPack"], localStorage["currentSection"]);
-		} else {
+		}
+		// if this is not first run and the user has not added anything that needs processing, process the default pack
+		else {
 			var jsonObject = JSON.parse(localStorage["packList"]);
 			populate(jsonObject.defaultPack, localStorage.currentSection);
 			localStorage["currentPack"] = jsonObject.defaultPack;
 		}
 	}
 }
-
 
 
 /*****************************************
@@ -198,6 +179,7 @@ function clearScreen() {
  ****************************************/
 
 function removeVerse(storageName, packSectionName, idNumber) {
+	//prevent accidental deletion
 	var confirm = window.confirm("Are you sure you want to delete this verse?");
 	if (confirm) {
 		var jsonObject = JSON.parse(localStorage[storageName]);
