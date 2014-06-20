@@ -22,14 +22,16 @@
 			return value && JSON.parse(value);
 		}
 
-		function addVerse(storage) {
-			var obj = localStorage.getObject(storage);
+		function addVerse() {
+			var name = localStorage["currentPack"]
+			var obj = localStorage.getObject(name);
 			obj["working"].push({
 				"text": $("#verseInput").val(),
 				"reference": $("#referenceInput").val(),
 				"id": obj["working"].length + 1
 			});
-			localStorage[storage] = JSON.stringify(obj);
+			localStorage[name] = JSON.stringify(obj);
+			alert("You added a verse to "+localStorage.currentPack);
 		}
 	</script>
 </head>
@@ -40,7 +42,7 @@
 		<textarea cols="20" rows="4" name="verseInput" id="verseInput" placeholder="Paste or type your verse here"></textarea>
 		<input type="text" name="referenceInput" id="referenceInput" value="" placeholder="Reference (Ex: John 3:16)">
 		<input type="text" name="versionInput" id="versionInput" value="" placeholder="Bible Version (Ex: NKJV, ESV)">
-		<input id="addButton" type="button" value="Add Verse" onclick="addVerse('currentPack')">
+		<input id="addButton" type="button" value="Add Verse" onclick="addVerse()">
 		<input id="finishedButton" type="button" value="Finished" onclick="window.location='index.html'">
 	</form>
 </body>

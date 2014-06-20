@@ -30,7 +30,7 @@
 
 			$("#menu_Delete").click(function () {
 				//eventually throw confirmation box 
-				removeVerse("currentPack", packSection, verseNumber);
+				removeVerse(localStorage.currentPack, localStorage.currentSection, verseNumber);
 				$('#popupMenu').popup("close");
 			});
 

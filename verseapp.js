@@ -3,8 +3,8 @@
  *******************************/
 
 var json; //Eliminates redundant server calls by globally caching the data
-var verseNumber, packSection;
-var debug = true;
+var verseNumber;
+var debug = false;
 //configuration
 var stockPack = "SummerPack.json"; //url to stock pack to be used
 
@@ -55,7 +55,7 @@ function loadVerses(location, storageName) {
  ******************************/
 function fixHeight() {
 	//subtract the header, nav size, padding for nav, and jqueryMobile menus that are hidden
-	var newHeight = window.innerHeight - 50 - $("#knownButton").height() - 26.22 - 40+ "px"; 
+	var newHeight = window.innerHeight - 50 - $("#knownButton").height() - 26.22 - 40 + "px";
 	$(".versecontainer").css("height", newHeight);
 }
 
@@ -142,21 +142,26 @@ function initializeApp() {
 				localStorage.setObject(systemname, json);
 
 				// Create the pack list default settings
-				localStorage.packList = '{"defaultPack":"' + systemname + '","currentPackName":"","packs": [{"userName": "' + json.packName + '","systemName": "' + systemname + '","id":"1"}]}';
+				localStorage.packList = '{"defaultPack":"' + systemname + '","packs": [{"userName": "' + json.packName + '","systemName": "' + systemname + '","id":"1"}]}';
+				localStorage["currentPack"] = systemname;
+				localStorage["currentSection"] = "working";
 				populate(systemname, "working"); //update user
 			}
 		})
 	} else { //required files exist, proceed with display
 		if (localStorage["changePack"]) {
-			if(debug){console.log("Pack changed to "+localStorage["changePack"]);}
-			populate(localStorage["changePack"], "working");
+			if (debug) {
+				console.log("Pack changed to " + localStorage["changePack"]);
+			}
+			populate(localStorage["changePack"], localStorage["currentSection"]);
 			localStorage.currentPack = localStorage["changePack"];
 			localStorage.removeItem("changePack");
+		} else if (localStorage["currentPack"]) {
+			populate(localStorage["currentPack"], localStorage["currentSection"]);
 		} else {
 			var jsonObject = JSON.parse(localStorage["packList"]);
-			populate(jsonObject.defaultPack, 'working');
-			localStorage.currentPack = jsonObject.defaultPack;
-			packSection = "working"; // update current section in use
+			populate(jsonObject.defaultPack, localStorage.currentSection);
+			localStorage["currentPack"] = jsonObject.defaultPack;
 		}
 	}
 }
@@ -193,15 +198,17 @@ function clearScreen() {
  ****************************************/
 
 function removeVerse(storageName, packSectionName, idNumber) {
+	var confirm = window.confirm("Are you sure you want to delete this verse?");
+	if (confirm) {
+		var jsonObject = JSON.parse(localStorage[storageName]);
+		for (var key in jsonObject[packSectionName]) {
+			if (jsonObject[packSectionName][key].id == idNumber) {
+				jsonObject[packSectionName].splice(key, 1);
+			} else continue
+		}
 
-	var jsonObject = JSON.parse(localStorage[storageName]);
-	for (var key in jsonObject[packSectionName]) {
-		if (jsonObject[packSectionName][key].id == idNumber) {
-			jsonObject[packSectionName].splice(key, 1);
-		} else continue
+		localStorage[storageName] = JSON.stringify(jsonObject);
+		clearScreen();
+		populate(storageName, packSectionName);
 	}
-
-	localStorage[storageName] = JSON.stringify(jsonObject);
-	clearScreen();
-	populate(storageName, packSectionName);
 }

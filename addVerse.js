@@ -11,6 +11,6 @@ Storage.prototype.getObject = function (key) {
 function addVerse(storage)
 {
 	var obj = localStorage.getObject(storage);
-	obj["working"].push({"text": $("#verseInput").val() ,"reference":$("#referenceInput").val() ,"id":obj["working"].length+1});
+	obj[localStorage.currentSection].push({"text": $("#verseInput").val() ,"reference":$("#referenceInput").val() ,"id":obj[localStorage.currentSection].length+1});
 	localStorage[storage]  = JSON.stringify(obj);
 }
