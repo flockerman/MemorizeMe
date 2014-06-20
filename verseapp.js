@@ -4,7 +4,7 @@
 
 var json; //Eliminates redundant server calls by globally caching the data
 var verseNumber, packSection;
-
+var debug = true;
 //configuration
 var stockPack = "SummerPack.json"; //url to stock pack to be used
 
@@ -54,7 +54,8 @@ function loadVerses(location, storageName) {
  * Redraws the interface after calculating the exact measurments. Guarentees a beautiful interface on every device.
  ******************************/
 function fixHeight() {
-	var newHeight = window.innerHeight - 50 - $("#knownButton").height() - 26.22 + "px"; //subtract the header, nav size, and padding for nav
+	//subtract the header, nav size, padding for nav, and jqueryMobile menus that are hidden
+	var newHeight = window.innerHeight - 50 - $("#knownButton").height() - 26.22 - 40+ "px"; 
 	$(".versecontainer").css("height", newHeight);
 }
 
@@ -73,7 +74,7 @@ function populate(storageName, packSectionName) {
 
 		//generate the verses for this pack
 		for (var key in jsonObject[packSectionName]) {
-			$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject[packSectionName][key].reference + '</center><a onclick="toggleMenu(' + jsonObject[packSectionName][key].id + '); "><img src="assets/menu.png" class="menu" /></a></h4><p>' + jsonObject[packSectionName][key].text + '</p></div>').trigger('create');
+			$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject[packSectionName][key].reference + '</center><a onclick="toggleVerseMenu(' + jsonObject[packSectionName][key].id + '); "><img src="assets/menu.png" class="menu" /></a></h4><p>' + jsonObject[packSectionName][key].text + '</p></div>').trigger('create');
 		}
 
 		// Update the pack name on the screen
@@ -123,8 +124,6 @@ function addVerse(storageName) {
 	}
 }
 
-
-
 /************************************
  * function initializeApp()
  * Initialize the app for first time use and more
@@ -137,47 +136,52 @@ function initializeApp() {
 		$.ajax({
 			url: stockPack,
 			dataType: "text",
-			success: function (data) {
-
-				//initialize for first use
+			success: function (data) { //initialize for first use				
 				json = JSON.parse(data);
-				localStorage.setObject('currentPack', json);
+				var systemname = json.packName.replace(/ /g, '');
+				localStorage.setObject(systemname, json);
 
 				// Create the pack list default settings
-				var systemname = json.packName.replace(/ /g, '');
-				localStorage.packList = '{"defaultPack":"' + systemname + '","packs": [{"userName": "' + json.packName + '","systemName": "' + systemname + '"}]}';
-
-				//run first use if needed
-				if (!localStorage["firstUse"]) {
-					localStorage.firstUse = true;
-				} else { //catch Errors
-					alert("Something went wrong with the stored data. Please resync your data.");
-				}
-				populate("currentPack", "working"); //update user
+				localStorage.packList = '{"defaultPack":"' + systemname + '","currentPackName":"","packs": [{"userName": "' + json.packName + '","systemName": "' + systemname + '","id":"1"}]}';
+				populate(systemname, "working"); //update user
 			}
 		})
 	} else { //required files exist, proceed with display
-		populate('currentPack', 'working');
-		packSection = "working"; // update current section in use
+		if (localStorage["changePack"]) {
+			if(debug){console.log("Pack changed to "+localStorage["changePack"]);}
+			populate(localStorage["changePack"], "working");
+			localStorage.currentPack = localStorage["changePack"];
+			localStorage.removeItem("changePack");
+		} else {
+			var jsonObject = JSON.parse(localStorage["packList"]);
+			populate(jsonObject.defaultPack, 'working');
+			localStorage.currentPack = jsonObject.defaultPack;
+			packSection = "working"; // update current section in use
+		}
 	}
 }
 
 
 
 /*****************************************
- * function toggleMenu()
+ * function toggleVerseMenu()
  * Displays the popup menu for the verses
  *****************************************/
 
-function toggleMenu(num) { // Pop up menu 
+function toggleVerseMenu(num) { // Pop up menu 
 	$('#popupMenu').popup("open");
 	verseNumber = num;
 };
 
+
+/******************************************
+ * function clearScreen()
+ * A simple function to clear the verse screen for a redraw
+ ******************************************/
+
 function clearScreen() {
 	$("#versecontainer").empty();
 }
-
 
 
 /****************************************
