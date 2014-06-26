@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<title>App Settings</title>
+	<script src="assets/js/jquery-1.11.0.min.js"></script>
+	<script src="assets/js/jquery.mobile-1.4.2.min.js"></script>
+	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.2.min.css">
+	<script>
+		var jsonObject = JSON.parse(localStorage["userProfile"]); //cache the profile
+		function saveSettings() {
+			for (var key in jsonObject["userSettings"]) {
+				jsonObject["userSettings"][key].moveToKnown = $("#correctSlider").val();
+				jsonObject["userSettings"][key].wolTestStyle = $("#styleWOLPack").val();
+				jsonObject["userSettings"][key].customTestStyle = $("#styleCustomPack").val();
+			}
+			localStorage.userProfile = JSON.stringify(jsonObject);
+			window.location = "index.html";
+		};
+
+		$(document).ready(function(){
+      for (var key in jsonObject["userSettings"]) {
+				$("#correctSlider").val(jsonObject["userSettings"][key].moveToKnown).slider("refresh");
+				$("#styleWOLPack").val(jsonObject["userSettings"][key].wolTestStyle).selectmenu("refresh");
+				$("#styleCustomPack").val(jsonObject["userSettings"][key].customTestStyle).selectmenu("refresh");
+			}
+		});
+	</script>
+</head>
+
+<body>
+	<!-- Home -->
+	<div data-role="page" id="page1">
+		<label for="correctSlider">Times correct to flip to known:</label>
+		<input type="range" name="correctSlider" id="correctSlider" min="3" max="10" value="6">
+
+		<div class="ui-field-contain">
+			<label for="styleWOLPack">WOL Testing Style:</label>
+			<select name="styleWOLPack" id="styleWOLPack" data-native-menu="false">
+				<option value="1" selected="selected">Question</option>
+				<option value="2">Reference</option>
+				<option value="3">Verse</option>
+				<option value="4">Fill in the Blank</option>
+				<option value="5">Random Style</option>
+			</select>
+		</div>
+
+		<div class="ui-field-contain">
+			<label for="styleCustomPack">User Made Testing Style:</label>
+			<select name="styleCustomPack" id="styleCustomPack" data-native-menu="false">
+				<option value="1">Question</option>
+				<option value="2" selected="selected">Reference</option>
+				<option value="3">Verse</option>
+				<option value="4">Fill in the Blank</option>
+				<option value="5">Random Style</option>
+			</select>
+		</div>
+		<input id="saveButton" type="button" data-icon="plus" data-iconpos="right" value="Save Settings" data-mini="true" onclick="saveSettings();">
+	</div>
+
+</body>
+
+</html>

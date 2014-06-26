@@ -269,7 +269,15 @@ function changeSection(section) {
 }
 
 function makeUserProfile() {
+	/*
+	   Test Styles
+		 1. Question
+		 2. Reference
+		 3. Verse
+		 4. Fill in the Blank
+		 5. Random
+	*/
 	var d = new Date();
 	var uuid = d.getTime() + Math.uuid(10, 16);
-	localStorage.userProfile = '{"uuid": "' + uuid + '","userProfile":"","userSettings": [{"moveToKnown": "","testStyle": ""}]}';
+	localStorage.userProfile = '{"uuid": "' + uuid + '","userProfile":"","userSettings": [{"moveToKnown": "6","wolTestStyle": "1","customTestStyle":"2"}]}';
 }
