@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<title>Edit a Verse</title>
+	<script src="assets/js/jquery-1.11.0.min.js"></script>
+	<script src="assets/js/jquery.mobile-1.4.2.min.js"></script>
+	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.2.min.css">
+	<script type="application/javascript">
+		Storage.prototype.getObject = function (key) {
+			var value = this.getItem(key);
+			return value && JSON.parse(value);
+		}
+
+
+		var pack = localStorage.currentPack;
+		var section = localStorage.currentSection;
+		var ident = localStorage.editVerse;
+		var obj = localStorage.getObject(pack); //get the pack out
+
+		$(document).ready(function () {
+			for (var key in obj[section]) {
+				if (obj[section][key].id == ident) {
+					$("#verseInput").html(obj[section][key].text);
+					$("#referenceInput").val(obj[section][key].reference);
+					$("#versionInput").val(obj[section][key].version);
+				}
+			}
+		});
+
+		function addVerse() {
+			for (var key in obj[section]) {
+				if (obj[section][key].id == ident) {
+					obj[section][key].text = $("#verseInput").val();
+					obj[section][key].reference = $("#referenceInput").val();
+					obj[section][key].version = $("#versionInput").val();
+				}
+			}
+			localStorage[pack] = JSON.stringify(obj); //save the changes
+			window.location = "index.html";
+		}
+	</script>
+</head>
+
+<body>
+	<h3 style="text-align: center; text-decoration: underline">Edit a Verse</h3>
+	<form style="padding-left: 5px; padding-right: 5px;">
+		<textarea cols="20" rows="4" id="verseInput"></textarea>
+		<input type="text" id="referenceInput" value="">
+		<input type="text" id="versionInput" value="">
+		<input id="addButton" type="button" value="Finished Editing" onclick="addVerse()">
+	</form>
+</body>
+
+</html>

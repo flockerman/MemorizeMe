@@ -44,6 +44,9 @@
 	padding-right: 30px;
 	height: 44px;
 }
+.selected {
+background-color: #d6d6d6 !important;
+}
 @media all and (max-width: 640px) {
 	.menu {
 		height: 25px;
