@@ -56,9 +56,11 @@ function loadVerses(location, storageName) {
  ******************************/
 
 function fixHeight() {
-	//subtract the header, nav size, padding for nav, and jqueryMobile menus that are hidden
-	var newHeight = window.innerHeight - 50 - $("#knownButton").height() - 26.22 - 40 + "px";
-	$(".versecontainer").css("height", newHeight);
+	$(window).load(function () { // this line fixes a DOM event bug in Chrome where img's are not fully loaded before event fires
+		//subtract the header and nav size 
+		var newHeight = window.innerHeight - 50 - $("#knownButton").outerHeight()+"px";
+		$(".versecontainer").css("height", newHeight);
+	});
 }
 
 
@@ -278,6 +280,6 @@ function makeUserProfile() {
 		 5. Random
 	*/
 	var d = new Date();
-	var uuid = d.getTime() + Math.uuid(10, 16);
+	var uuid = d.getTime() + Math.uuid(10, 16); //generate a UUID for the user6
 	localStorage.userProfile = '{"uuid": "' + uuid + '","userProfile":"","userSettings": [{"moveToKnown": "6","wolTestStyle": "1","customTestStyle":"2"}]}';
 }
