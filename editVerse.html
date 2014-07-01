@@ -13,36 +13,31 @@
 	<script src="assets/js/jquery.mobile-1.4.2.min.js"></script>
 	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.2.min.css">
 	<script type="application/javascript">
-		Storage.prototype.getObject = function (key) {
-			var value = this.getItem(key);
-			return value && JSON.parse(value);
-		}
-
-
 		var pack = localStorage.currentPack;
-		var section = localStorage.currentSection;
 		var ident = localStorage.editVerse;
-		var obj = localStorage.getObject(pack); //get the pack out
+		var obj = JSON.parse(localStorage[pack]); //get the pack out
 
 		$(document).ready(function () {
-			for (var key in obj[section]) {
-				if (obj[section][key].id == ident) {
-					$("#verseInput").html(obj[section][key].text);
-					$("#referenceInput").val(obj[section][key].reference);
-					$("#versionInput").val(obj[section][key].version);
+			for (var key in obj['data']) {
+				if (obj["data"][key].id == ident) {
+					$("#verseInput").html(obj["data"][key].text);
+					$("#referenceInput").val(obj["data"][key].reference);
+					$("#versionInput").val(obj["data"][key].version);
 				}
 			}
 		});
 
 		function addVerse() {
-			for (var key in obj[section]) {
-				if (obj[section][key].id == ident) {
-					obj[section][key].text = $("#verseInput").val();
-					obj[section][key].reference = $("#referenceInput").val();
-					obj[section][key].version = $("#versionInput").val();
+			for (var key in obj["data"]) {
+				if (obj["data"][key].id == ident) {
+					obj["data"][key].text = $("#verseInput").val();
+					obj["data"][key].reference = $("#referenceInput").val();
+					obj["data"][key].version = $("#versionInput").val();
 				}
 			}
-			localStorage[pack] = JSON.stringify(obj); //save the changes
+			//save the changes
+			localStorage[pack] = JSON.stringify(obj);
+			//
 			window.location = "index.html";
 		}
 	</script>

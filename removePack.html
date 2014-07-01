@@ -15,7 +15,6 @@
 </head>
 
 <body>
-
 	<script type="application/javascript">
 		$(document).ready(function () {
 			makePacks();
@@ -34,22 +33,31 @@
 			}
 		}
 
-
-
 		function removePack(id) {
-			var confirm = window.confirm("Are you sure you want to delete this pack?");
-			if (confirm) {
+			if (window.confirm("Are you sure you want to delete this pack? Doing so will erase all of the progress you have saved for this pack.")) {
 				var jsonObject = JSON.parse(localStorage["packList"]); // take the packList out for editing
-				for (var key in jsonObject["packs"]) {
+				var up = JSON.parse(localStorage.userProfile);
 
+				for (var key in jsonObject["packs"]) {
 					if (jsonObject["packs"][key].id == id) {
+						console.log(jsonObject["packs"][key].id);
+						//catch if the user is deleting the current pack
 						if (localStorage["currentPack"] == jsonObject["packs"][key].systemName) {
+
 							localStorage["currentPack"] = jsonObject.defaultPack;
-						} // catch if the user is deleting the current pack
-						localStorage.removeItem(jsonObject["packs"][key].systemName); // remove the pack from storage
-						jsonObject["packs"].splice(key, 1); // remove the pack from packList
+						}
+						//remove from the users profile
+						delete up["userProfile"][jsonObject["packs"][key].systemName];
+
+						// remove the pack from local storage
+						localStorage.removeItem(jsonObject["packs"][key].systemName);
+
+						// remove the pack from packList
+						jsonObject["packs"].splice(key, 1);
 						localStorage["packList"] = JSON.stringify(jsonObject);
-						window.location = "removePack.html"; //refresh the removePack page
+
+						//refresh the screen
+						window.location = "removePack.html";
 					}
 				}
 			}

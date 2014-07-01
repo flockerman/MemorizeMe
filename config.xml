@@ -2,7 +2,7 @@
 <widget xmlns   = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.phonegap.MemorizeMe"
-        versionCode = "0.1.0" >
+        versionCode = "0.2.0" >
     <name>Memorize Me</name>
     <description>A digital scripture memory system</description>
     <author>Frank Lockerman</author>

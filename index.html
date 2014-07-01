@@ -14,14 +14,10 @@
 	<script src="assets/js/verseapp.js"></script>
 	<script type="application/javascript">
 		$(document).ready(function () {
+			//start the app up!
 			initializeApp();
-			//Adjust the menus for context
-			if (localStorage.currentSection == "other") {
-				$("#menu_move_verse").html("Move to 'Working'");
-			} else if (localStorage.currentSection == "working") {
-				$("#menu_move_verse").html("Move to 'All'");
-			}
-
+			
+			//event handlers for buttons
 			$("#menu_Edit").click(function () {
 				localStorage.editVerse = verseNumber;
 				window.location = "editVerse.html";
@@ -62,7 +58,7 @@
 <body class="body" onload="">
 	<!-- Header -->
 	<div id="header" class="header">
-		<div id="headerText" class="headerText">Olympians 2015 HCSB</div>
+		<div id="headerText" class="headerText"></div>
 	</div>
 	<div id="testButtonContainer" class="testButtonContainer">
 		<button id="testButton" class="ui-btn ui-corner-all">Test</button>

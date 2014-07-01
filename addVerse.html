@@ -13,26 +13,15 @@
 	<script src="assets/js/jquery.mobile-1.4.2.min.js"></script>
 	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.2.min.css">
 	<script type="application/javascript">
-		Storage.prototype.setObject = function (key, value) {
-			this.setItem(key, JSON.stringify(value));
-		}
-
-		Storage.prototype.getObject = function (key) {
-			var value = this.getItem(key);
-			return value && JSON.parse(value);
-		}
-
 		function addVerse() {
 			var name = localStorage.currentPack
-			var obj = localStorage.getObject(name);
-			obj[localStorage.currentSection].push({
-				"text": $("#verseInput").val(),
-				"reference": $("#referenceInput").val(),
-				"version": $("#versionInput").val(),
-				"id": obj[localStorage.currentSection].length + 1,
-			});
+			var obj = JSON.parse(localStorage[name]);
+			var up = JSON.parse(localStorage.userProfile);
+			obj["data"].push({"text": $("#verseInput").val(),"reference": $("#referenceInput").val(),"version": $("#versionInput").val(),"id": Object.keys(obj["data"]).length+1});
    		localStorage[name] = JSON.stringify(obj);
-			alert("You added a verse to "+localStorage.currentPack);
+			up["userProfile"][localStorage.currentPack].push({"id": Object.keys(up["userProfile"][localStorage.currentPack]).length+1, "queue": "O"});
+			localStorage.userProfile = JSON.stringify(up);
+			alert("You added a verse to "+obj.packName);
 		}
 	</script>
 </head>

@@ -1,5 +1,5 @@
 {
-	"globalPackId":"WOLdefault",
+	"globalPackId":"",
 	"packName": "Summer Pack",
 	"userPack": "true",
 	"author": "WOL",
@@ -7,9 +7,7 @@
 	"version": "",
 	"sync": "",
 	"share": "",
-	"known": [],
-	"working": [],
-	"other": [
+	"data": [
 		{
 			"text": "When I became embittered and my innermost being was wounded, I was stupid and didn’t understand; I was an unthinking animal toward You.",
 			"reference": "Psalm 73:21-22",
