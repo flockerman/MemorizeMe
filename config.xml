@@ -6,5 +6,5 @@
     <name>Memorize Me</name>
     <description>A digital scripture memory system</description>
     <author>Frank Lockerman</author>
-		<gap:plugin name="org.apache.cordova.media" version="0.2.9" />
+		<gap:plugin name="org.apache.cordova.media" version="0.2.8" />
 </widget>
