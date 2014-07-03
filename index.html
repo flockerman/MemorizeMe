@@ -27,10 +27,10 @@
 				//
 			});*/
 			$("#menu_move_verse").click(function () {
-				if (localStorage.currentSection == "other") {
+				if (localStorage.currentSection == "all") {
 					moveVerse("working");
 				} else if (localStorage.currentSection == "working") {
-					moveVerse("other");
+					moveVerse("all");
 				}
 				$('#popupMenu').popup("close");
 			});
@@ -61,7 +61,7 @@
 		<div id="headerText" class="headerText"></div>
 	</div>
 	<div id="testButtonContainer" class="testButtonContainer">
-		<button id="testButton" class="ui-btn ui-corner-all">Test</button>
+		<button id="testButton" class="ui-btn ui-corner-all" onclick="window.location='test.html'">Test</button>
 	</div>
 
 	<!-- Main App -->
@@ -109,7 +109,7 @@
 			<br>
 			<span class="navtext">Working</span>
 		</button>
-		<button class="ui-btn" id="allButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('other')">
+		<button class="ui-btn" id="allButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('all')">
 			<img src="assets/img/all.png" class="navimg" />
 			<br>
 			<span class="navtext">All</span>

@@ -81,13 +81,20 @@ function populate(storageName, packSectionName) {
 			for (var num in up["userProfile"][storageName]) {
 				if (up["userProfile"][storageName][num].id == ident) {
 					var queue = up["userProfile"][storageName][num].queue;
-					if (packSectionName == "other" && queue == "O") {
-						$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + jsonObject["data"][key].id + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+					if (packSectionName == "all") {
+						if (queue == "A") {
+							$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+						} else if (queue == "W") {
+							$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center><img src="assets/img/working_icon.png" class="icons" />' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+						} else if (queue == "K") {
+							$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center><img src="assets/img/known_icon.png" class="icons" />' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+						}
+
 
 					} else if (packSectionName == "working" && queue == "W") {
-						$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + jsonObject["data"][key].id + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+						$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
 					} else if (packSectionName == "known" && queue == "K") {
-						$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + jsonObject["data"][key].id + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+						$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
 					}
 				}
 			}
@@ -138,9 +145,9 @@ function initializeApp() {
 				// Create the pack list default settings
 				localStorage.packList = '{"defaultPack":"' + systemname + '","packs": [{"userName": "' + json.packName + '","systemName": "' + systemname + '","id":"1"}]}';
 				localStorage.currentPack = systemname;
-				localStorage.currentSection = "other";
+				localStorage.currentSection = "all";
 				makeUserSettings();
-				populate(systemname, "other"); //update users screen
+				populate(systemname, "all"); //update users screen
 			}
 		})
 	} else { //required files exist, proceed with display
@@ -174,9 +181,9 @@ function initializeApp() {
  * function toggleVerseMenu()
  * Displays the popup menu for the verses
  *****************************************/
-function toggleVerseMenu(num) { // Pop up menu 
-	if (localStorage.currentSection == "other") {
-		//adjust the menu based on context
+function toggleVerseMenu(num) { // Pop up menu
+	//ajust menu based on context
+	if (localStorage.currentSection == "all" || localStorage.currentSection == "known") {
 		$("#menu_move_verse").html("Move to 'Working'");
 	} else if (localStorage.currentSection == "working") {
 		$("#menu_move_verse").html("Move to 'All'");
@@ -201,11 +208,7 @@ function clearScreen() {
  * Visually displays the current pack section to the user by changing the color of the button
  ********************************************/
 function addSelected() {
-	if (localStorage.currentSection == "other") {
-		$("#allButton").addClass("selected");
-	} else {
-		$("#" + localStorage.currentSection + "Button").addClass("selected");
-	}
+	$("#" + localStorage.currentSection + "Button").addClass("selected");
 }
 
 
@@ -214,14 +217,7 @@ function addSelected() {
  * Removes the background that is added from addSelected()
  ********************************************/
 function removeSelected() {
-	if (localStorage.currentSection == "other") {
-		$("#allButton").removeClass("selected");
-	} else {
-
-		$("#" + localStorage.currentSection + "Button").removeClass("selected");
-	}
-
-
+	$("#" + localStorage.currentSection + "Button").removeClass("selected");
 }
 /****************************************
  * function removeVerse()
@@ -275,8 +271,8 @@ function moveVerse(location) {
 	for (var key in profile["userProfile"][pack]) {
 		if (profile["userProfile"][pack][key].id == verseNumber) { //find the right verse
 			switch (location) {
-			case "other":
-				change = "O";
+			case "all":
+				change = "A";
 				break;
 			case "working":
 				change = "W";
@@ -330,10 +326,11 @@ function makeUserSettings() {
 			var obj = new Object();
 			ident = json['data'][key].id;
 			obj.id = ident;
-			obj.queue = "O";
+			obj.queue = "W";
+			obj.correct = 0;
 			array.push(obj);
 		};
 		final[sysname] = array;
 	};
-	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": [{"moveToKnown": "6","wolTestStyle": "1","customTestStyle":"2"}]}';
+	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": "6","wolTestStyle": "1","customTestStyle":"2"}}';
 }

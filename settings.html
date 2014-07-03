@@ -14,22 +14,18 @@
 	<script>
 		var jsonObject = JSON.parse(localStorage["userProfile"]); //cache the profile
 		function saveSettings() {
-			for (var key in jsonObject["userSettings"]) {
-				jsonObject["userSettings"][key].moveToKnown = $("#correctSlider").val();
-				jsonObject["userSettings"][key].wolTestStyle = $("#styleWOLPack").val();
-				jsonObject["userSettings"][key].customTestStyle = $("#styleCustomPack").val();
-			}
+			jsonObject["userSettings"].moveToKnown = $("#correctSlider").val();
+			jsonObject["userSettings"].wolTestStyle = $("#styleWOLPack").val();
+			jsonObject["userSettings"].customTestStyle = $("#styleCustomPack").val();
 			localStorage.userProfile = JSON.stringify(jsonObject);
 			window.location = "index.html";
 		};
 
-		$(document).ready(function(){
-      for (var key in jsonObject["userSettings"]) {
-				$("#correctSlider").val(jsonObject["userSettings"][key].moveToKnown).slider("refresh");
-				$("#styleWOLPack").val(jsonObject["userSettings"][key].wolTestStyle).selectmenu("refresh");
-				$("#styleCustomPack").val(jsonObject["userSettings"][key].customTestStyle).selectmenu("refresh");
-			}
-		});
+		$(document).ready(function () {
+				$("#correctSlider").val(jsonObject["userSettings"].moveToKnown).slider("refresh");
+				$("#styleWOLPack").val(jsonObject["userSettings"].wolTestStyle).selectmenu("refresh");
+				$("#styleCustomPack").val(jsonObject["userSettings"].customTestStyle).selectmenu("refresh");
+			});
 	</script>
 </head>
 

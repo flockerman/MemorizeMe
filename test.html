@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Test your Knowledge</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="assets/js/jquery-1.11.0.min.js"></script>
+	<script src="assets/js/jquery.touchSwipe.min.js"></script>
+	<style>
+		.mainText {
+			font-size: 25px;
+		}
+		.data {
+			/*background-color: #AAAAAA;
+			color: #616161;*/
+			width: 90%;
+			position: relative;
+			top: 25%;
+			text-align: center;
+			padding-left: 5%;
+			padding-right: 5%;
+		}
+		.body {}
+	</style>
+	<script>
+		//Global Variables
+		var globalId;
+		var verseNumber;
+		var data; // used to hold all verses that will be quized on 
+		 //cache the pack and user profile for easy access
+		var pack = JSON.parse(localStorage[localStorage.currentPack]);
+		var up = JSON.parse(localStorage.userProfile);
+
+		$(document).ready(function () {
+			//auto correct for screen sizes
+			$("body").css("margin", "0px");
+			$("#container").css("height", window.innerHeight - $("#button").outerHeight());
+
+			//initialize swipe interface
+			$(function () {
+				container = $("#container");
+				container.swipe({
+					triggerOnTouchEnd: true,
+					swipeStatus: swipeStatus
+				});
+				//Catch the swipes and act on them
+				function swipeStatus(event, phase, direction, distance, fingers) {
+					//The swipe is finished, so trigger the logic
+					if (phase == "end") {
+						if (direction == "right") {
+							previousVerse();
+						} else if (direction == "left") {
+							nextVerse();
+						} else if (direction == "up") {
+							right();
+						} else if (direction == "down") {
+							alert("down")
+						}
+					}
+				}
+
+				//initialize the test
+				testUser();
+			})
+		})
+
+		function testUser() {
+
+			var array = [];
+			var counter = 0;
+			for (var key in pack["data"]) {
+				var ident = pack["data"][key].id;
+				for (var num in up["userProfile"][localStorage.currentPack]) {
+					if (up["userProfile"][localStorage.currentPack][num].id == ident) {
+						if (up["userProfile"][localStorage.currentPack][num].queue == "W" || up["userProfile"][localStorage.currentPack][num].queue == "K") {
+							var obj = new Object;
+							if (pack.userPack == "false") {
+								obj.question = pack["data"][key].question;
+							}
+
+							obj.id = ident;
+							obj.text = pack["data"][key].text;
+							obj.reference = pack["data"][key].reference;
+							obj.version = pack["data"][key].version;
+							obj.counter = counter + 1;
+							array.push(obj);
+							counter++;
+						}
+					}
+				}
+			}
+			data = array;
+			verseNumber = 1;
+			showVerse(verseNumber);
+		}
+
+
+		function showVerse(id) {
+
+			/* Test Styles
+		 1. Question
+		 2. Reference
+		 3. Verse
+		 4. Fill in the Blank
+		 5. Random*/
+
+			for (var key in data) {
+				if (data[key].counter == id) {
+           globalId = data[key].id;
+					//determine the profile settings to pull
+					if (pack.userPack == "true") {
+						switch (up["userSettings"].customTestStyle) {
+						case "2":
+							$("#data").html('<div class="mainText"><center>What is the verse for this reference?<br><br><center>' + data[key].reference + '</center></div>');
+							break;
+						case "3":
+							$("#data").html('<div class="mainText"><center>What reference goes with this verse?<br><br>' + data[key].text + '</center></div>');
+							break;
+						case "4":
+							break;
+						case "5":
+							break;
+						}
+					}
+					if (pack.UserPack == "false") {
+						switch (up["userSettings"].wolTestStyle) {
+						case "1":
+							$("#data").html('<div class="mainText"><center>' + data[key].question + '</center></div>');
+							break;
+						case "2":
+							$("#data").html('<div class="mainText"><center>What is the verse for this reference?<br><br><center>' + data[key].reference + '</center></div>');
+							break;
+						case "3":
+							$("#data").html('<div class="mainText"><center>What reference goes with this verse?<br><br>' + data[key].text + '</center></div>');
+							break;
+						case "4":
+							break;
+						case "5":
+							break;
+
+						}
+					}
+				}
+			}
+		}
+
+		function nextVerse() {
+			if (verseNumber < data.length) {
+				verseNumber++;
+				showVerse(verseNumber);
+			}
+		}
+
+		function previousVerse() {
+			if (verseNumber > 1) {
+				verseNumber--;
+				showVerse(verseNumber);
+			}
+		}
+
+		function right() 
+		{
+			var boo = false;
+			var user = JSON.parse(localStorage.userProfile);
+			for (var key in user["userProfile"][localStorage.currentPack]) 
+			{
+				if (user["userProfile"][localStorage.currentPack][key].id == globalId) {
+
+					//add 1 to the correct tally for this verse
+					var kkk = user["userProfile"][localStorage.currentPack][key].correct;
+					console.log(kkk);
+					user["userProfile"][localStorage.currentPack][key].correct = kkk + 1;
+
+					//check if flip to known needs to happen
+					if (user["userProfile"][localStorage.currentPack][key].correct == user["userSettings"].moveToKnown && user["userProfile"][localStorage.currentPack][key].queue == "W") {
+						user["userProfile"][localStorage.currentPack][key].queue = "K";
+					}
+
+					//check if the user is finished with the test
+					else if (data.length == 1) {
+						// finished with the quiz
+						localStorage.userProfile = JSON.stringify(user); //save the data
+						window.location = "index.html"; //redirect to main page
+					}
+
+					//remove the verse from the test queue										
+					if (verseNumber < data.length) {
+						for (var num in data) {
+							if (data[num].counter == verseNumber && boo != true) {
+								data.splice(num, 1);
+								fixCounter();
+								console.log("New Versenumber: "+verseNumber);
+								//verseNumber++;
+								boo = true;
+							}
+						}
+					}
+
+
+					// go to previous verse
+					else if (verseNumber == data.length && boo != true) {
+						for (var num in data) {
+							if (data[num].counter == verseNumber) {
+								data.splice(num, 1);
+								fixCounter();
+								verseNumber--;
+								boo = true;
+							}
+						}
+					}
+
+				}
+
+			}
+			localStorage.userProfile = JSON.stringify(user);
+			showVerse(verseNumber);
+			console.log(JSON.stringify(data));
+		}
+
+		function wrong() {}
+
+		function fixCounter() {
+			count = 1;
+			for (var key in data) {
+				data[key].counter = count;
+				count++;
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<div id="container" style="width: 100%; overflow: auto;">
+		<div id="data" class="data"></div>
+	</div>
+	<button id="button" style="text-align: center; width: 100%; margin: 0px; padding: 10px 0px 10px 0px;">Quit Early</button>
+</body>
+
+</html>

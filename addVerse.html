@@ -19,7 +19,7 @@
 			var up = JSON.parse(localStorage.userProfile);
 			obj["data"].push({"text": $("#verseInput").val(),"reference": $("#referenceInput").val(),"version": $("#versionInput").val(),"id": Object.keys(obj["data"]).length+1});
    		localStorage[name] = JSON.stringify(obj);
-			up["userProfile"][localStorage.currentPack].push({"id": Object.keys(up["userProfile"][localStorage.currentPack]).length+1, "queue": "O"});
+			up["userProfile"][localStorage.currentPack].push({"id": Object.keys(up["userProfile"][localStorage.currentPack]).length+1, "queue": "A"});
 			localStorage.userProfile = JSON.stringify(up);
 			alert("You added a verse to "+obj.packName);
 		}

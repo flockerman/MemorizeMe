@@ -20,10 +20,16 @@
 	padding-bottom: 10px;
 }
 .menu {
-	height: 16px;
-	position: relative;
+	height: 22px;
+	position: absolute;
 	left: 97%;
-	top: -7px;
+	top: 10px;
+}
+.icons {
+	position: relative;
+	top: 3px;
+	left: -6px;
+	height: 16px;
 }
 .footer {
 	position: relative;
@@ -45,7 +51,7 @@
 	height: 44px;
 }
 .selected {
-background-color: #d6d6d6 !important;
+	background-color: #d6d6d6 !important;
 }
 @media all and (max-width: 640px) {
 	.menu {
