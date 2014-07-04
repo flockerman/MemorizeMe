@@ -326,7 +326,7 @@ function makeUserSettings() {
 			var obj = new Object();
 			ident = json['data'][key].id;
 			obj.id = ident;
-			obj.queue = "K";
+			obj.queue = "A";
 			obj.correct = 0;
 			array.push(obj);
 		};
