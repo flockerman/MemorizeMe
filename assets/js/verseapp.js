@@ -334,3 +334,17 @@ function makeUserSettings() {
 	};
 	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": "6","wolTestStyle": "1","customTestStyle":"2"}}';
 }
+
+/********************************************
+ * function resetCorrect()
+ * Resets the correct count for a verse
+ ********************************************/
+function resetCorrect() {
+	var up = JSON.parse(localStorage.userProfile);
+	for (var key in up["userProfile"][localStorage.currentPack]) {
+		if (up["userProfile"][localStorage.currentPack][key].id == verseNumber) {
+			up["userProfile"][localStorage.currentPack][key].correct = 0;
+		}
+	}
+  localStorage.userProfile = JSON.stringify(up);
+}

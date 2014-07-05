@@ -27,7 +27,8 @@
 				//
 			});*/
 			$("#menu_move_verse").click(function () {
-				if (localStorage.currentSection == "all") {
+				if (localStorage.currentSection != "working") {
+					resetCorrect();
 					moveVerse("working");
 				} else if (localStorage.currentSection == "working") {
 					moveVerse("all");

@@ -112,7 +112,7 @@
 
 			for (var key in data) {
 				if (data[key].counter == id) {
-           globalId = data[key].id;
+					globalId = data[key].id;
 					//determine the profile settings to pull
 					if (pack.userPack == "true") {
 						switch (up["userSettings"].customTestStyle) {
@@ -164,26 +164,27 @@
 			}
 		}
 
-		function right() 
-		{
-			var boo = false;
+		function right() {
+			var stop = false;
 			var user = JSON.parse(localStorage.userProfile);
-			for (var key in user["userProfile"][localStorage.currentPack]) 
-			{
+			for (var key in user["userProfile"][localStorage.currentPack]) {
 				if (user["userProfile"][localStorage.currentPack][key].id == globalId) {
 
-					//add 1 to the correct tally for this verse
-					var kkk = user["userProfile"][localStorage.currentPack][key].correct;
-					console.log(kkk);
-					user["userProfile"][localStorage.currentPack][key].correct = kkk + 1;
+					//add 1 to the correct tally for this verse if its less then the max number tracked
+					//var kkk = user["userProfile"][localStorage.currentPack][key].correct;
+					
+					if (user["userProfile"][localStorage.currentPack][key].correct < 10) {
+						user["userProfile"][localStorage.currentPack][key].correct = user["userProfile"][localStorage.currentPack][key].correct + 1;
+						console.log(user["userProfile"][localStorage.currentPack][key].correct);
+					}
 
-					//check if flip to known needs to happen
+					//check if flip to "known" needs to happen
 					if (user["userProfile"][localStorage.currentPack][key].correct == user["userSettings"].moveToKnown && user["userProfile"][localStorage.currentPack][key].queue == "W") {
 						user["userProfile"][localStorage.currentPack][key].queue = "K";
 					}
 
 					//check if the user is finished with the test
-					else if (data.length == 1) {
+					if (data.length == 1) {
 						// finished with the quiz
 						localStorage.userProfile = JSON.stringify(user); //save the data
 						window.location = "index.html"; //redirect to main page
@@ -192,25 +193,27 @@
 					//remove the verse from the test queue										
 					if (verseNumber < data.length) {
 						for (var num in data) {
-							if (data[num].counter == verseNumber && boo != true) {
+							if (data[num].counter == verseNumber && stop != true) {
 								data.splice(num, 1);
 								fixCounter();
-								console.log("New Versenumber: "+verseNumber);
-								//verseNumber++;
-								boo = true;
+								console.log("Data Length: " + data.length);
+								console.log("Versenumber: " + verseNumber);
+								stop = true;
 							}
 						}
 					}
 
 
 					// go to previous verse
-					else if (verseNumber == data.length && boo != true) {
+					if (verseNumber == data.length && stop != true) {
 						for (var num in data) {
 							if (data[num].counter == verseNumber) {
 								data.splice(num, 1);
 								fixCounter();
 								verseNumber--;
-								boo = true;
+								console.log("Data Length: " + data.length);
+								console.log("Versenumber: " + verseNumber);
+								stop = true;
 							}
 						}
 					}
