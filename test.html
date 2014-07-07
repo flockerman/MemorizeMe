@@ -12,6 +12,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="assets/js/jquery-1.11.0.min.js"></script>
 	<script src="assets/js/jquery.touchSwipe.min.js"></script>
+	<script src="assets/js/jquery.ui.ipad.js"></script>
+	<script src="assets/js/record.js"></script>
 	<style>
 		.mainText {
 			font-size: 25px;
@@ -30,9 +32,10 @@
 	</style>
 	<script>
 		//Global Variables
-		var globalId;
-		var verseNumber;
+		var globalId, verseNumber;
+		var flip = false;
 		var data; // used to hold all verses that will be quized on 
+		
 		 //cache the pack and user profile for easy access
 		var pack = JSON.parse(localStorage[localStorage.currentPack]);
 		var up = JSON.parse(localStorage.userProfile);
@@ -42,17 +45,20 @@
 			$("body").css("margin", "0px");
 			$("#container").css("height", window.innerHeight - $("#button").outerHeight());
 
-			//initialize swipe interface
 			$(function () {
-				container = $("#container");
-				container.swipe({
-					triggerOnTouchEnd: true,
-					swipeStatus: swipeStatus
-				});
-				//Catch the swipes and act on them
-				function swipeStatus(event, phase, direction, distance, fingers) {
-					//The swipe is finished, so trigger the logic
-					if (phase == "end") {
+				var tapCount = 0;
+				var doubleTapCount = 0;
+				var longTapCount = 0;
+				var swipeCount = 0;
+				var blackCount = 0;
+				//Enable swiping...
+				$("#container").swipe({
+					tap: function (event, target) {
+						//alert("Tap!");
+						revealAnswer(verseNumber);
+					},
+					swipe: function (event, direction, distance, duration, fingerCount, fingerData) {
+						//if (phase == "end") {
 						if (direction == "right") {
 							previousVerse();
 						} else if (direction == "left") {
@@ -60,15 +66,15 @@
 						} else if (direction == "up") {
 							right();
 						} else if (direction == "down") {
-							alert("down")
+							wrong();
 						}
-					}
-				}
-
-				//initialize the test
-				testUser();
-			})
-		})
+						//}
+					},
+					threshold: 75
+				});
+			});
+			testUser();
+		});
 
 		function testUser() {
 
@@ -171,16 +177,20 @@
 				if (user["userProfile"][localStorage.currentPack][key].id == globalId) {
 
 					//add 1 to the correct tally for this verse if its less then the max number tracked
-					//var kkk = user["userProfile"][localStorage.currentPack][key].correct;
-					
 					if (user["userProfile"][localStorage.currentPack][key].correct < 10) {
+						//var a = user["userProfile"][localStorage.currentPack][key].correct;
 						user["userProfile"][localStorage.currentPack][key].correct = user["userProfile"][localStorage.currentPack][key].correct + 1;
-						console.log(user["userProfile"][localStorage.currentPack][key].correct);
+
 					}
 
 					//check if flip to "known" needs to happen
-					if (user["userProfile"][localStorage.currentPack][key].correct == user["userSettings"].moveToKnown && user["userProfile"][localStorage.currentPack][key].queue == "W") {
-						user["userProfile"][localStorage.currentPack][key].queue = "K";
+					if (user["userProfile"][localStorage.currentPack][key].correct >= user["userSettings"].moveToKnown) {
+						//protect from settings bug
+						user["userProfile"][localStorage.currentPack][key].correct = Number(user["userSettings"].moveToKnown);
+						// flip the queue
+						if (user["userProfile"][localStorage.currentPack][key].queue == "W") {
+							user["userProfile"][localStorage.currentPack][key].queue = "K";
+						}
 					}
 
 					//check if the user is finished with the test
@@ -196,8 +206,6 @@
 							if (data[num].counter == verseNumber && stop != true) {
 								data.splice(num, 1);
 								fixCounter();
-								console.log("Data Length: " + data.length);
-								console.log("Versenumber: " + verseNumber);
 								stop = true;
 							}
 						}
@@ -211,8 +219,6 @@
 								data.splice(num, 1);
 								fixCounter();
 								verseNumber--;
-								console.log("Data Length: " + data.length);
-								console.log("Versenumber: " + verseNumber);
 								stop = true;
 							}
 						}
@@ -223,10 +229,59 @@
 			}
 			localStorage.userProfile = JSON.stringify(user);
 			showVerse(verseNumber);
-			console.log(JSON.stringify(data));
 		}
 
-		function wrong() {}
+		function wrong() {
+			var stop = false;
+			var user = JSON.parse(localStorage.userProfile);
+			for (var key in user["userProfile"][localStorage.currentPack]) {
+				if (user["userProfile"][localStorage.currentPack][key].id == globalId) {
+
+					//subtract 1 from the correct tally for this verse if its not at zero
+					if (user["userProfile"][localStorage.currentPack][key].correct > 0) {
+						user["userProfile"][localStorage.currentPack][key].correct = user["userProfile"][localStorage.currentPack][key].correct - 1;
+					}
+
+					//check if flip to "known" needs to happen
+					if (user["userProfile"][localStorage.currentPack][key].correct == 0 && user["userProfile"][localStorage.currentPack][key].queue == "K") {
+						user["userProfile"][localStorage.currentPack][key].queue = "W";
+					}
+
+					//check if the user is finished with the test
+					if (data.length == 1) {
+						// finished with the quiz
+						localStorage.userProfile = JSON.stringify(user); //save the data
+						window.location = "index.html"; //redirect to main page
+					}
+
+					//remove the verse from the test queue										
+					if (verseNumber < data.length) {
+						for (var num in data) {
+							if (data[num].counter == verseNumber && stop != true) {
+								data.splice(num, 1);
+								fixCounter();
+								stop = true;
+							}
+						}
+					}
+
+
+					// go to previous verse
+					if (verseNumber == data.length && stop != true) {
+						for (var num in data) {
+							if (data[num].counter == verseNumber) {
+								data.splice(num, 1);
+								fixCounter();
+								verseNumber--;
+								stop = true;
+							}
+						}
+					}
+				}
+			}
+			localStorage.userProfile = JSON.stringify(user);
+			showVerse(verseNumber);
+		}
 
 		function fixCounter() {
 			count = 1;
@@ -235,14 +290,51 @@
 				count++;
 			}
 		}
-	</script>
+
+		function revealAnswer(id)
+		{
+			if (!flip)
+			{
+				for (var key in data)
+				{
+					if (data[key].counter == id)
+					{									
+							switch (up["userSettings"].wolTestStyle) 
+							{
+							  case "1": //question
+								  $("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '<br>'+data[key].reference+'</center></div>');
+								  break;
+							  case "2": //reference
+							  	$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '</center></div>');
+							  	break;
+						  	case "3": //verse
+							  	$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].reference + '</center></div>');
+							  	break;
+							  case "4": // fill in the blank
+									$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '</center></div>');
+							  	break;
+							  case "5": //random
+								  break;
+						 }
+					}
+				}
+				flip = true;
+			}
+			 else if(flip){
+			showVerse(verseNumber);
+			flip = false;
+			}
+		}
+</script>
 </head>
 
 <body>
 	<div id="container" style="width: 100%; overflow: auto;">
+		
 		<div id="data" class="data"></div>
 	</div>
 	<button id="button" style="text-align: center; width: 100%; margin: 0px; padding: 10px 0px 10px 0px;" onclick="window.location= 'index.html';">Finished</button>
+	<center><div id="mic" style="position: relative; top: -300px; text-align: center; width: 150px; height: 150px;"><img src="assets/img/mic.png" align="middle" /><button id="playBack" onclick="playAudio('myrecording.amr')">Play back</button></div></center>
 </body>
 
 </html>

@@ -332,7 +332,7 @@ function makeUserSettings() {
 		};
 		final[sysname] = array;
 	};
-	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": "6","wolTestStyle": "1","customTestStyle":"2"}}';
+	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": 6,"wolTestStyle": 1,"customTestStyle":2}}';
 }
 
 /********************************************
