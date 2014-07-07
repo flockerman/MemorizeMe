@@ -1,8 +1,8 @@
 $(document).ready(function () {
-	$("mic").mousedown(function () {
+	$("#mic").mousedown(function () {
     record();
 	})
-	$("mic").mouseup(function () {
+	$("#mic").mouseup(function () {
     mediaRec.stopRecord();
 	})
 
