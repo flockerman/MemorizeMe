@@ -35,7 +35,7 @@
 		var globalId, verseNumber;
 		var flip = false;
 		var data; // used to hold all verses that will be quized on 
-		
+
 		 //cache the pack and user profile for easy access
 		var pack = JSON.parse(localStorage[localStorage.currentPack]);
 		var up = JSON.parse(localStorage.userProfile);
@@ -54,7 +54,6 @@
 				//Enable swiping...
 				$("#container").swipe({
 					tap: function (event, target) {
-						//alert("Tap!");
 						revealAnswer(verseNumber);
 					},
 					swipe: function (event, direction, distance, duration, fingerCount, fingerData) {
@@ -108,49 +107,30 @@
 
 
 		function showVerse(id) {
-
-			/* Test Styles
-		 1. Question
-		 2. Reference
-		 3. Verse
-		 4. Fill in the Blank
-		 5. Random*/
-
+			var style;
 			for (var key in data) {
 				if (data[key].counter == id) {
 					globalId = data[key].id;
 					//determine the profile settings to pull
 					if (pack.userPack == "true") {
-						switch (up["userSettings"].customTestStyle) {
-						case "2":
-							$("#data").html('<div class="mainText"><center>What is the verse for this reference?<br><br><center>' + data[key].reference + '</center></div>');
-							break;
-						case "3":
-							$("#data").html('<div class="mainText"><center>What reference goes with this verse?<br><br>' + data[key].text + '</center></div>');
-							break;
-						case "4":
-							break;
-						case "5":
-							break;
-						}
+						style = up["userSettings"].customTestStyle;
+					} else if (pack.userPack == "false") {
+						style = up["userSettings"].wolTestStyle;
 					}
-					if (pack.UserPack == "false") {
-						switch (up["userSettings"].wolTestStyle) {
-						case "1":
-							$("#data").html('<div class="mainText"><center>' + data[key].question + '</center></div>');
-							break;
-						case "2":
-							$("#data").html('<div class="mainText"><center>What is the verse for this reference?<br><br><center>' + data[key].reference + '</center></div>');
-							break;
-						case "3":
-							$("#data").html('<div class="mainText"><center>What reference goes with this verse?<br><br>' + data[key].text + '</center></div>');
-							break;
-						case "4":
-							break;
-						case "5":
-							break;
-
-						}
+					switch (style) {
+					case "1": //Question
+						$("#data").html('<div class="mainText"><center>' + data[key].question + '</center></div>');
+						break;
+					case "2": // Reference
+						$("#data").html('<div class="mainText"><center>What is the verse for this reference?<br><br><center>' + data[key].reference + '</center></div>');
+						break;
+					case "3": //Verse
+						$("#data").html('<div class="mainText"><center>What reference goes with this verse?<br><br>' + data[key].text + '</center></div>');
+						break;
+					case "4": //Fill in the Blank
+						break;
+					case "5": //Random
+						break;
 					}
 				}
 			}
@@ -291,46 +271,45 @@
 			}
 		}
 
-		function revealAnswer(id)
-		{
-			if (!flip)
-			{
-				for (var key in data)
-				{
-					if (data[key].counter == id)
-					{									
-							switch (up["userSettings"].wolTestStyle) 
-							{
-							  case "1": //question
-								  $("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '<br>'+data[key].reference+'</center></div>');
-								  break;
-							  case "2": //reference
-							  	$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '</center></div>');
-							  	break;
-						  	case "3": //verse
-							  	$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].reference + '</center></div>');
-							  	break;
-							  case "4": // fill in the blank
-									$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '</center></div>');
-							  	break;
-							  case "5": //random
-								  break;
-						 }
+		function revealAnswer(id) {
+			if (!flip) {
+				for (var key in data) {
+					if (data[key].counter == id) {
+						if (pack.userPack == "true") {
+							style = up["userSettings"].customTestStyle;
+						} else if (pack.userPack == "false") {
+							style = up["userSettings"].wolTestStyle;
+						}
+						switch (style) {
+						case "1": //question
+							$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '<br>' + data[key].reference + '</center></div>');
+							break;
+						case "2": //reference
+							$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '</center></div>');
+							break;
+						case "3": //verse
+							$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].reference + '</center></div>');
+							break;
+						case "4": // fill in the blank
+							$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '</center></div>');
+							break;
+						case "5": //random
+							break;
+						}
 					}
 				}
 				flip = true;
-			}
-			 else if(flip){
-			showVerse(verseNumber);
-			flip = false;
+			} else if (flip) {
+				showVerse(verseNumber);
+				flip = false;
 			}
 		}
-</script>
+	</script>
 </head>
 
 <body>
 	<div id="container" style="width: 100%; overflow: auto;">
-		
+
 		<div id="data" class="data"></div>
 	</div>
 	<button id="button" style="text-align: center; width: 100%; margin: 0px; padding: 10px 0px 10px 0px;" onclick="window.location= 'index.html';">Finished</button>
