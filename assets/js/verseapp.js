@@ -58,7 +58,9 @@ function fixHeight() {
 		//subtract the header and nav size 
 		var newHeight = window.innerHeight - 50 - $("#knownButton").outerHeight() + "px";
 		$(".versecontainer").css("height", newHeight);
+		console.log("Height Fixed");
 	});
+	console.log("fixHeight()");
 }
 
 
@@ -77,7 +79,7 @@ function populate(storageName, packSectionName) {
 
 		//generate the verses for this pack
 		for (var key in jsonObject["data"]) {
-			ident = jsonObject["data"][key].id;
+			var ident = jsonObject["data"][key].id;
 			for (var num in up["userProfile"][storageName]) {
 				if (up["userProfile"][storageName][num].id == ident) {
 					var queue = up["userProfile"][storageName][num].queue;
@@ -332,7 +334,7 @@ function makeUserSettings() {
 		};
 		final[sysname] = array;
 	};
-	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": 6,"wolTestStyle": 1,"customTestStyle":2}}';
+	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": 6,"wolTestStyle": 1,"customTestStyle": 2}}';
 }
 
 /********************************************

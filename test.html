@@ -13,7 +13,6 @@
 	<script src="assets/js/jquery-1.11.0.min.js"></script>
 	<script src="assets/js/jquery.touchSwipe.min.js"></script>
 	<script src="assets/js/jquery.ui.ipad.js"></script>
-	<!--<script src="assets/js/record.js"></script>-->
 	<style>
 		.mainText {
 			font-size: 25px;
@@ -33,6 +32,7 @@
 	<script>
 		//Global Variables
 		var globalId, verseNumber;
+		var random = null;
 		var flip = false;
 		var data; // used to hold all verses that will be quized on 
 
@@ -59,8 +59,10 @@
 					swipe: function (event, direction, distance, duration, fingerCount, fingerData) {
 						//if (phase == "end") {
 						if (direction == "right") {
+							random = null;
 							previousVerse();
 						} else if (direction == "left") {
+							random = null;
 							nextVerse();
 						} else if (direction == "up") {
 							right();
@@ -113,10 +115,25 @@
 					globalId = data[key].id;
 					//determine the profile settings to pull
 					if (pack.userPack == "true") {
+
 						style = up["userSettings"].customTestStyle;
 					} else if (pack.userPack == "false") {
 						style = up["userSettings"].wolTestStyle;
 					}
+
+					//generate a random style
+					if (style == "5" && random == null) {
+						if (pack.userPack == "true") {
+							style = Math.floor(Math.random() * 3) + 2;
+						} else if (pack.userPack == "false") {
+							style = Math.floor(Math.random() * 4) + 1;
+						}
+						style = style.toString();
+						random = style;
+					} else if (style == "5" && random != null) {
+						style = random;
+					}
+
 					switch (style) {
 					case "1": //Question
 						$("#data").html('<div class="mainText"><center>' + data[key].question + '</center></div>');
@@ -128,8 +145,8 @@
 						$("#data").html('<div class="mainText"><center>What reference goes with this verse?<br><br>' + data[key].text + '</center></div>');
 						break;
 					case "4": //Fill in the Blank
-						break;
-					case "5": //Random
+						$("#data").html('<div class="mainText"><center>Fill in the Blank:<br><br>' + fillInTheBlank(data[key].text, 0.4) + '<br>' +
+							fillInTheBlank(data[key].reference, 0.4) + '</center></div>');
 						break;
 					}
 				}
@@ -264,7 +281,7 @@
 		}
 
 		function fixCounter() {
-			count = 1;
+			var count = 1;
 			for (var key in data) {
 				data[key].counter = count;
 				count++;
@@ -272,6 +289,7 @@
 		}
 
 		function revealAnswer(id) {
+			var style;
 			if (!flip) {
 				for (var key in data) {
 					if (data[key].counter == id) {
@@ -279,6 +297,9 @@
 							style = up["userSettings"].customTestStyle;
 						} else if (pack.userPack == "false") {
 							style = up["userSettings"].wolTestStyle;
+						}
+						if (random != null) {
+							style = random;
 						}
 						switch (style) {
 						case "1": //question
@@ -291,9 +312,7 @@
 							$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].reference + '</center></div>');
 							break;
 						case "4": // fill in the blank
-							$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '</center></div>');
-							break;
-						case "5": //random
+							$("#data").html('<div class="mainText"><center>Answer:<br><br>' + data[key].text + '<br>' + data[key].reference + '</center></div>');
 							break;
 						}
 					}
@@ -304,6 +323,20 @@
 				flip = false;
 			}
 		}
+
+		function fillInTheBlank(str, mult) {
+			var array = str.split(" ");
+			var count = Math.round(array.length * mult);
+			for (i = 0; i < count; i++) {
+				var num = Math.floor((Math.random() * array.length));
+				while (array[num] == "_____") {
+					num = Math.floor((Math.random() * array.length));
+				}
+				array[num] = "_____";
+			}
+			var ret = array.join(" ");
+			return ret;
+		}
 	</script>
 </head>
 
@@ -313,7 +346,6 @@
 		<div id="data" class="data"></div>
 	</div>
 	<button id="button" style="text-align: center; width: 100%; margin: 0px; padding: 10px 0px 10px 0px;" onclick="window.location= 'index.html';">Finished</button>
-	<!--<center><div id="mic" style="position: relative; top: -300px; text-align: center; width: 150px; height: 150px;"><img src="assets/img/mic.png" align="middle" /><button id="playBack" onclick="playAudio('myrecording.amr')">Play back</button></div></center>-->
 </body>
 
 </html>
