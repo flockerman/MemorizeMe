@@ -3,7 +3,7 @@
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         id          = "com.Encounter.MemorizeMe"
         versionCode = "0.2.0" >
-    <name>Memorize Me WOLLCM Encounter</name>
+    <name>Memorize Me</name>
     <description>A digital scripture memory system</description>
     <author>Frank Lockerman</author>
 		<gap:plugin name="org.apache.cordova.media" version="0.2.8" />
