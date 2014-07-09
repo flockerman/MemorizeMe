@@ -54,13 +54,11 @@ function loadVerses(location, storageName) {
  * Redraws the interface after calculating the exact measurments. Guarentees a beautiful interface on every device.
  ******************************/
 function fixHeight() {
-	$(window).load(function () { // this line fixes a DOM event bug in Chrome where img's are not fully loaded before event fires
+	$(function () {
 		//subtract the header and nav size 
 		var newHeight = window.innerHeight - 50 - $("#knownButton").outerHeight() + "px";
 		$(".versecontainer").css("height", newHeight);
-		console.log("Height Fixed");
 	});
-	console.log("fixHeight()");
 }
 
 
@@ -134,6 +132,7 @@ function initializeApp() {
 
 	// verify required settings are present
 	if (!localStorage["packList"]) {
+		console.log("All Clear!");
 		$.ajax({
 			url: stockPack,
 			dataType: "text",
@@ -348,5 +347,5 @@ function resetCorrect() {
 			up["userProfile"][localStorage.currentPack][key].correct = 0;
 		}
 	}
-  localStorage.userProfile = JSON.stringify(up);
+	localStorage.userProfile = JSON.stringify(up);
 }

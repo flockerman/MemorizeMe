@@ -34,7 +34,7 @@
 				var uuid = d.getTime() + Math.uuid(10, 16);
 
 				// make the pack
-				localStorage[uuid] = '{"globalPackId":"' + uuid + '","packName":"' + packname + '","userPack":"true","author":"","version":"","sync":"","share":"","data":[{"text": "' + text + '","reference":"' + reference + '","id":"1","version":"' + version + '"}]}';
+				localStorage[uuid] = '{"globalPackId":"' + uuid + '","packName":"' + packname + '","userPack":"true","author":"","version":"","sync":"","share":"","data":[{"text": "' + text + '","reference":"' + reference + '","id":1,"version":"' + version + '"}]}';
 
 				// add it to the pack list
 				var packlist = JSON.parse(localStorage.packList);
@@ -49,8 +49,8 @@
 				var up = JSON.parse(localStorage.userProfile);
 				var obj = new Object();
 				var array = [];
-				obj.id = 1;
-				obj.queue = "O";
+				obj.id = "1";
+				obj.queue = "A";
 				array.push(obj);
 				up["userProfile"][uuid] = array;
 
