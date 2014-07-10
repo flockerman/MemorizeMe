@@ -8,6 +8,6 @@
     <description>A digital scripture memory system</description>
     <author>Frank Lockerman</author>
 		<gap:plugin name="org.apache.cordova.media" version="0.2.8" />
-	<gap:config-file platform="ios" parent="UIViewControllerBasedStatusBarAppearance"><false/></gap:config-file>
+	  <preference name="fullscreen" value="true" />
 </widget>
 
