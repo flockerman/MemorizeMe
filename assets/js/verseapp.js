@@ -54,11 +54,9 @@ function loadVerses(location, storageName) {
  * Redraws the interface after calculating the exact measurments. Guarentees a beautiful interface on every device.
  ******************************/
 function fixHeight() {
-	$(function () {
 		//subtract the header and nav size 
 		var newHeight = window.innerHeight - 50 - $("#knownButton").outerHeight() + "px";
 		$(".versecontainer").css("height", newHeight);
-	});
 }
 
 
