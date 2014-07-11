@@ -4,7 +4,7 @@
         id          = "com.Encounter.MemorizeMe"
         versionCode = "0.2.0"
 				version = "0.2.0">
-    <name>Memorize Me</name>
+    <name>Memorize Me Beta 1</name>
     <description>A digital scripture memory system</description>
     <author>Frank Lockerman</author>
 		<gap:plugin name="org.apache.cordova.media"/>
