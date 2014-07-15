@@ -3,7 +3,7 @@
 	font-family: Verdana, Geneva, sans-serif;
 }
 .container {
-	overflow-y: scroll;
+	overflow: auto;
 }
 .versecontainer {
 	width: 100%;
@@ -12,13 +12,13 @@
 	background-color: #09165C;
 	color: #F2CE61;
 	font-family: Verdana, Geneva, sans-serif;
-	text-align: center;
 	width: 100%;
 	height: 30px;
 	font-size: 23px;
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
+.headerText{text-align: center;}
 .menu {
 	height: 22px;
 	position: absolute;
@@ -65,14 +65,15 @@
 		height: 25px;
 	}
 	.navtext {
-		font-size: 7px;
+		font-size: 11px;
+	}
+	.navbtn {
+		padding: 11px 0px 11px 0px;
 	}
 	.header {
 		background-color: #09165C;
 		color: #F2CE61;
 		font-family: Verdana, Geneva, sans-serif;
-		text-align: left;
-		padding-left: 25px;
 		width: 100%;
 		height: 30px;
 		font-size: 18px;

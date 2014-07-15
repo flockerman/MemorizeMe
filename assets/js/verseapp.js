@@ -53,10 +53,10 @@ function loadVerses(location, storageName) {
  * function fixHeight()
  * Redraws the interface after calculating the exact measurments. Guarentees a beautiful interface on every device.
  ******************************/
-function fixHeight() {
-		//subtract the header and nav size 
-		var newHeight = window.innerHeight - 50 - $("#knownButton").outerHeight() + "px";
-		$(".versecontainer").css("height", newHeight);
+function fixHeight(adjustment) {
+	//subtract the header and nav size 
+	var newHeight = window.innerHeight - 50 - $("#knownButton").outerHeight() - adjustment + "px";
+	$(".versecontainer").css("height", newHeight);
 }
 
 
@@ -73,6 +73,9 @@ function populate(storageName, packSectionName) {
 		var jsonObject = JSON.parse(localStorage[storageName]);
 		var up = JSON.parse(localStorage.userProfile);
 
+		//bug fix for issue with height when there are no verses in the queue
+		var counter = 0;
+
 		//generate the verses for this pack
 		for (var key in jsonObject["data"]) {
 			var ident = jsonObject["data"][key].id;
@@ -82,17 +85,22 @@ function populate(storageName, packSectionName) {
 					if (packSectionName == "all") {
 						if (queue == "A") {
 							$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+							counter++;
 						} else if (queue == "W") {
 							$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center><img src="assets/img/working_icon.png" class="icons" />' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+							counter++;
 						} else if (queue == "K") {
 							$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center><img src="assets/img/known_icon.png" class="icons" />' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+							counter++;
 						}
 
 
 					} else if (packSectionName == "working" && queue == "W") {
 						$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+						counter++;
 					} else if (packSectionName == "known" && queue == "K") {
 						$("#versecontainer").append('<div class="verse" data-role="collapsible" data-collapsed-icon="" data-expanded-icon="" data-inset="false" style="margin: 0px;"><h4><center>' + jsonObject["data"][key].reference + ' (' + jsonObject["data"][key].version + ')</center><a onclick="toggleVerseMenu(' + ident + '); "><img src="assets/img/menu.png" class="menu" /></a></h4><p>' + jsonObject["data"][key].text + '</p></div>').trigger('create');
+						counter++;
 					}
 				}
 			}
@@ -112,7 +120,14 @@ function populate(storageName, packSectionName) {
 			});
 		}
 
-		fixHeight(); //redraw the interface
+		//redraw the interface
+		if (counter > 0) {
+			fixHeight(0);
+		} else if (counter == 0 && localStorage.currentSection == "working") {
+			fixHeight(8);
+		} else if (counter == 0 && localStorage.currentSection == "known") {
+			fixHeight(0);
+		}
 		addSelected();
 
 	} else { //Catch the error if the data is missing. Alert the user.
@@ -185,7 +200,7 @@ function toggleVerseMenu(num) { // Pop up menu
 	if (localStorage.currentSection == "all" || localStorage.currentSection == "known") {
 		$("#menu_move_verse").html("Move to 'Working'");
 	} else if (localStorage.currentSection == "working") {
-		$("#menu_move_verse").html("Move to 'All'");
+		$("#menu_move_verse").html("Remove from 'Working'");
 	}
 	//show the menu
 	$('#popupMenu').popup("open");
@@ -258,8 +273,6 @@ function removeVerse(storageName, packSectionName, idNumber) {
  * function moveVerse()
  * Moves a verse between sections in a pack
  *  = location: the name of the section to move the verse to
- *
- * TODO: this can be optimized with array manupulation instead of the holder var
  ******************************************/
 function moveVerse(location) {
 	var pack = localStorage.currentPack;
@@ -331,7 +344,7 @@ function makeUserSettings() {
 		};
 		final[sysname] = array;
 	};
-	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": 6,"wolTestStyle": 1,"customTestStyle": 2}}';
+	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": "6","wolTestStyle": "1","customTestStyle": "2"}}';
 }
 
 /********************************************
