@@ -13,7 +13,16 @@
 	<script src="assets/js/jquery-1.11.1.min.js"></script>
 	<script src="assets/js/jquery.touchSwipe.min.js"></script>
 	<script src="assets/js/jquery.ui.ipad.js"></script>
-	<script src="assets/js/jquery.mobile-1.4.3.min.js"></script>
+	<script src="assets/js/notify.min.js">
+		/* 
+	   Notify JS framework is Copyright © 2013 Jaime Pillora <dev@jpillora.com>
+		 Used under the MIT Liscense.
+	*/
+	</script>
+	<!--
+    The Arrows used for this page are from the reveal.js framework and liscenced under the MIT liscense. 
+    Copyright (C) 2014 Hakim El Hattab, http://hakim.se 
+  -->
 	<style>
 		.mainText {
 			font-size: 25px;
@@ -23,12 +32,23 @@
 			color: #616161;*/
 			width: 90%;
 			position: relative;
-			top: 25%;
+			top: 35%;
 			text-align: center;
 			padding-left: 5%;
 			padding-right: 5%;
 		}
-		.body {}
+		.body {} .arrowContainer {
+			text-align: center;
+		}
+		.arrows {
+			width: 30px;
+			height: 30px;
+		}
+		.tap {
+			position: relative;
+			top: 31%;
+			text-align: center;
+		}
 	</style>
 	<script>
 		//Global Variables
@@ -67,7 +87,9 @@
 							nextVerse();
 						} else if (direction == "up") {
 							right();
+							$.notify("Verse marked as Correct!", "success");
 						} else if (direction == "down") {
+							$.notify("Verse marked as incorrect.", "warn");
 							wrong();
 						}
 						//}
@@ -82,6 +104,14 @@
 
 			var array = [];
 			var counter = 0;
+
+			if (!localStorage.firstTimeTest) {
+				$("#data").before('<div style="text-align: center; position:relative; top: 12%"><img src="assets/img/up.png" style="width: 30px; height: 30px;" /><br>			<span>Swipe up to mark correct</span></div>');
+				$("#data").before('<div class="tap"><span>Tap the verse to reveal the answer </span><img src="assets/img/curve.png" style="position: relative; top: 16px;"  /></div>')
+				$("#data").after('<div style="text-align: center; position:relative; top: 48%"><img src="assets/img/down.png" style="width: 30px; height: 30px;" /><br>			<span>Swipe down to mark incorrect</span></div>');
+				localStorage.firstTimeTest = "false";
+			}
+
 			for (var key in pack["data"]) {
 				var ident = pack["data"][key].id;
 				for (var num in up["userProfile"][localStorage.currentPack]) {
@@ -110,7 +140,8 @@
 
 
 		function showVerse(id) {
-			var style;
+			var style, firsttime;
+
 			for (var key in data) {
 				if (data[key].counter == id) {
 					globalId = data[key].id;
@@ -150,6 +181,7 @@
 							fillInTheBlank(data[key].reference, 0.4) + '</center></div>');
 						break;
 					}
+
 				}
 			}
 		}
@@ -343,10 +375,10 @@
 
 <body>
 	<div id="container" style="width: 100%; overflow: auto;">
-
 		<div id="data" class="data"></div>
 	</div>
 	<button id="button" style="text-align: center; width: 100%; margin: 0px; padding: 10px 0px 10px 0px;" onclick="window.location= 'index.html';">Finished</button>
+
 </body>
 
 </html>
