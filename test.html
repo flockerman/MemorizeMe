@@ -62,6 +62,9 @@
 		var up = JSON.parse(localStorage.userProfile);
 
 		$(document).ready(function () {
+			//apply localization
+			localize();
+			showHelp();
 			//auto correct for screen sizes
 			$("body").css("margin", "0px");
 			$("#container").css("height", window.innerHeight - $("#button").outerHeight());
@@ -104,13 +107,6 @@
 
 			var array = [];
 			var counter = 0;
-
-			if (!localStorage.firstTimeTest) {
-				$("#data").before('<div style="text-align: center; position:relative; top: 12%"><img src="assets/img/up.png" style="width: 30px; height: 30px;" /><br>			<span>Swipe up to mark correct</span></div>');
-				$("#data").before('<div class="tap"><span>Tap the verse to reveal the answer </span><img src="assets/img/curve.png" style="position: relative; top: 16px;"  /></div>')
-				$("#data").after('<div style="text-align: center; position:relative; top: 48%"><img src="assets/img/down.png" style="width: 30px; height: 30px;" /><br>			<span>Swipe down to mark incorrect</span></div>');
-				localStorage.firstTimeTest = "false";
-			}
 
 			for (var key in pack["data"]) {
 				var ident = pack["data"][key].id;
@@ -370,14 +366,41 @@
 			var ret = array.join(" ");
 			return ret;
 		}
+
+		function localize() {
+			var local = JSON.parse(localStorage.localization);
+      $("#1").html(local["test"]["1"]);
+			$("#2").html(local["test"]["2"]);
+			$("#3").html(local["test"]["3"]);
+			$("#button").html(local["test"]["4"]);
+		}
+
+		function showHelp() {
+			if (up["userSettings"].showHelp == "false") {
+				$("#upHelp").hide();
+				$(".tap").hide();
+				$("#downHelp").hide();
+			}
+		}
 	</script>
 </head>
 
 <body>
 	<div id="container" style="width: 100%; overflow: auto;">
+		<div id="upHelp" style="text-align: center; position:relative; top: 12%">
+			<img src="assets/img/up.png" style="width: 30px; height: 30px;" />
+			<br><span id="1"></span>
+		</div>
+		<div class="tap"><span id="2"></span>
+			<img src="assets/img/curve.png" style="position: relative; top: 16px;" />
+		</div>
 		<div id="data" class="data"></div>
+		<div id="downHelp" style="text-align: center; position:relative; top: 48%">
+			<img src="assets/img/down.png" style="width: 30px; height: 30px;" />
+			<br>	<span id="3"></span>
+		</div>
 	</div>
-	<button id="button" style="text-align: center; width: 100%; margin: 0px; padding: 10px 0px 10px 0px;" onclick="window.location= 'index.html';">Finished</button>
+	<button id="button" style="text-align: center; width: 100%; margin: 0px; padding: 10px 0px 10px 0px;" onclick="window.location= 'index.html';"></button>
 
 </body>
 

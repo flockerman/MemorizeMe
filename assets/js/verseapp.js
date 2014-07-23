@@ -112,7 +112,8 @@ function populate(storageName, packSectionName) {
 		//Check if the user is authorized to add verses to this pack and
 		//the current section is not known
 		if (jsonObject.userPack == "true" && localStorage.currentSection != "known") {
-			$("#versecontainer").append('<a href="#" id="addVerseButton" class="ui-btn ui-icon-delete ui-btn-icon-right ui-icon-plus" onclick="window.location=addVerse.html">Add a Verse</a>').trigger('create');
+			var local = JSON.parse(localStorage.localization);
+			$("#versecontainer").append('<a href="#" id="addVerseButton" class="ui-btn ui-icon-delete ui-btn-icon-right ui-icon-plus" onclick="window.location=addVerse.html">' + local["home"]["7"] + '</a>').trigger('create');
 
 			// bind a click event to the newly generated button
 			$('#addVerseButton').click(function () {
@@ -197,10 +198,11 @@ function initializeApp() {
  *****************************************/
 function toggleVerseMenu(num) { // Pop up menu
 	//ajust menu based on context
+	var local = JSON.parse(localStorage.localization);
 	if (localStorage.currentSection == "all" || localStorage.currentSection == "known") {
-		$("#menu_move_verse").html("Move to 'Working'");
+		$("#menu_move_verse").html(local["verseMenu"]["4"]["1"]);
 	} else if (localStorage.currentSection == "working") {
-		$("#menu_move_verse").html("Remove from 'Working'");
+		$("#menu_move_verse").html(local["verseMenu"]["4"]["2"]);
 	}
 	//show the menu
 	$('#popupMenu').popup("open");
@@ -344,7 +346,7 @@ function makeUserSettings() {
 		};
 		final[sysname] = array;
 	};
-	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": "6","wolTestStyle": "1","customTestStyle": "2"}}';
+	localStorage.userProfile = '{"uuid": "","userProfile": ' + JSON.stringify(final) + ',"userSettings": {"moveToKnown": "6","wolTestStyle": "1","customTestStyle": "2","showHelp":"true"}}';
 }
 
 /********************************************
@@ -359,4 +361,49 @@ function resetCorrect() {
 		}
 	}
 	localStorage.userProfile = JSON.stringify(up);
+}
+
+//TODO: Possibly optimize this 
+function localize(where) {
+	if (!localStorage.localization) {
+		$.ajax({
+			url: "assets/local-en-us.json",
+			dataType: "text",
+			success: function (data) {
+						localStorage.localization = data;
+				showLocal(where);
+			}
+		})
+	} else {
+		showLocal(where);
+	}
+}
+
+function showLocal(where) {
+	var local = JSON.parse(localStorage.localization);
+	if (where == "home") {
+		//Interface Buttons
+		$("#1").html(local["home"]["1"]);
+		$("#2").html(local["home"]["2"]);
+		$("#3").html(local["home"]["3"]);
+		$("#4").html(local["home"]["4"]);
+		$("#5").html(local["home"]["5"]);
+		$("#testButton").html(local["home"]["6"]);
+
+		//Pack Menu
+		$("#pack_menu").html(local["packMenu"]["1"]);
+		$("#pack_choose").html(local["packMenu"]["2"]);
+		$("#pack_add").html(local["packMenu"]["3"]);
+		$("#pack_remove").html(local["packMenu"]["4"]);
+
+		//Verse Menu
+
+		$("#verse_menu").html(local["verseMenu"]["1"]);
+		$("#menu_Edit").html(local["verseMenu"]["2"]);
+		$("#menu_Share").html(local["verseMenu"]["3"]);
+		$("#menu_MovePacks").html(local["verseMenu"]["5"]);
+		$("#menu_Delete").html(local["verseMenu"]["6"]);
+
+	}
+	$(document).trigger("localize");
 }

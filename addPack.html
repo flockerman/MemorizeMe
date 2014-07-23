@@ -17,6 +17,18 @@
 
 <body>
 	<script type="application/javascript">
+		$(document).ready(function () {
+			var local = JSON.parse(localStorage.localization);
+			//Interface Buttons
+			$("#title").html(local["addPack"]["1"]);
+			$("#packInput").attr("placeholder", local["addPack"]["2"]);
+			$("#verseInput").attr("placeholder", local["addPack"]["3"]);
+			$("#referenceInput").attr("placeholder", local["addPack"]["4"]);
+			$("#versionInput").attr("placeholder", local["addPack"]["5"]);
+			$("#addButton").html(local["addPack"]["6"]);
+			$("#finishedButton").html(local["addPack"]["7"]);
+		});
+
 		function addpack() {
 			// verify that all required information is available
 			if ($("#packInput").val() == "" || $("#versionInput").val() == "") {
@@ -60,15 +72,15 @@
 			}
 		}
 	</script>
-	<h3 style="text-align: center; text-decoration: underline">Add a Pack</h3>
+	<h3 id="title" style="text-align: center; text-decoration: underline"></h3>
 	<form id="containter" style="padding-left: 5px; padding-right: 5px;">
-		<input type="text" name="packInput" id="packInput" value="" placeholder="Pack Name: (Fall Pack)">
-		<textarea cols="20" rows="4" name="verseInput" id="verseInput" placeholder="Paste or type your verse here"></textarea>
-		<input type="text" name="referenceInput" id="referenceInput" value="" placeholder="Reference (ex. John 3:16)">
-		<input type="text" name="versionInput" id="versionInput" value="" placeholder="Version: (ex, KJV)">
+		<input type="text" name="packInput" id="packInput" value="" placeholder="">
+		<textarea cols="20" rows="4" name="verseInput" id="verseInput" placeholder=""></textarea>
+		<input type="text" name="referenceInput" id="referenceInput" value="" placeholder="">
+		<input type="text" name="versionInput" id="versionInput" value="" placeholder="">
 	</form>
-	<input id="addButton" type="button" value="Add Pack" onclick="addpack()">
-	<input id="finishedButton" type="button" value="Finished" onclick="window.location='index.html'">
+	<button id="addButton" onclick="addpack()"></button>
+	<button id="finishedButton" onclick="window.location='index.html'"></button>
 </body>
 
 </html>

@@ -13,49 +13,72 @@
 	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.3.min.css">
 	<script>
 		var jsonObject = JSON.parse(localStorage["userProfile"]); //cache the profile
+		var local = JSON.parse(localStorage.localization);
+
 		function saveSettings() {
 			jsonObject["userSettings"].moveToKnown = $("#correctSlider").val();
 			jsonObject["userSettings"].wolTestStyle = $("#styleWOLPack").val();
 			jsonObject["userSettings"].customTestStyle = $("#styleCustomPack").val();
+			jsonObject["userSettings"].showHelp = $("#showHelpSwitch").val();
 			localStorage.userProfile = JSON.stringify(jsonObject);
 			window.location = "index.html";
 		};
 
 		$(document).ready(function () {
-				$("#correctSlider").val(jsonObject["userSettings"].moveToKnown).slider("refresh");
-				$("#styleWOLPack").val(jsonObject["userSettings"].wolTestStyle).selectmenu("refresh");
-				$("#styleCustomPack").val(jsonObject["userSettings"].customTestStyle).selectmenu("refresh");
-			});
+			//localize the page
+			$("#language").html(local["settings"]["5"] + local["name"] +"&nbsp;&nbsp;&nbsp;&nbsp;<button disabled=''>"+local["settings"]["6"]+"</button>");
+			$("#showHelpText").html(local["settings"]["7"]);
+			$("#1").html(local["settings"]["1"]);
+			$("#2").html(local["settings"]["2"]);
+			$("#3").html(local["settings"]["3"]);
+			$("#saveButton").html(local["settings"]["4"]);
+			$(".option1").html(local["settings"]["testingOptions"]["1"]);
+			$(".option2").html(local["settings"]["testingOptions"]["2"]);
+			$(".option3").html(local["settings"]["testingOptions"]["3"]);
+			$(".option4").html(local["settings"]["testingOptions"]["4"]);
+			$(".option5").html(local["settings"]["testingOptions"]["5"]);
+      
+			//get the current user settings
+			$("#correctSlider").val(jsonObject["userSettings"].moveToKnown).slider("refresh");
+			$("#styleWOLPack").val(jsonObject["userSettings"].wolTestStyle).selectmenu("refresh");
+			$("#styleCustomPack").val(jsonObject["userSettings"].customTestStyle).selectmenu("refresh");
+			$("#showHelpSwitch").val(jsonObject["userSettings"].showHelp).flipswitch("refresh");
+		});
 	</script>
 </head>
 
 <body>
 	<!-- Home -->
 	<div data-role="page" id="page1">
-		<label for="correctSlider">Times correct to flip to known:</label>
+		<div id="language"></div><br>
+		<div><span id="showHelpText"></span>&nbsp;&nbsp;&nbsp;&nbsp;<select id="showHelpSwitch" name="flip-select" data-role="flipswitch" data-mini="true">
+        <option value="true" selected="">Yes</option>
+        <option value="false">No</option>
+    </select></div>
+		<label id="1" for="correctSlider"></label>
 		<input type="range" name="correctSlider" id="correctSlider" min="3" max="10" value="6">
 
 		<div class="ui-field-contain">
-			<label for="styleWOLPack">WOL Testing Style:</label>
+			<label id="2" for="styleWOLPack"></label>
 			<select name="styleWOLPack" id="styleWOLPack" data-native-menu="false">
-				<option value="1" selected="selected">Question</option>
-				<option value="2">Reference</option>
-				<option value="3">Verse</option>
-				<option value="4">Fill in the Blank</option>
-				<option value="5">Random Style</option>
+				<option class="option1" value="1" selected="selected"></option>
+				<option class="option2" value="2"></option>
+				<option class="option3" value="3"></option>
+				<option class="option4" value="4"></option>
+				<option class="option5" value="5"></option>
 			</select>
 		</div>
 
 		<div class="ui-field-contain">
-			<label for="styleCustomPack">User Made Testing Style:</label>
+			<label id="3" for="styleCustomPack"></label>
 			<select name="styleCustomPack" id="styleCustomPack" data-native-menu="false">
-				<option value="2" selected="selected">Reference</option>
-				<option value="3">Verse</option>
-				<option value="4">Fill in the Blank</option>
-				<option value="5">Random Style</option>
+				<option class="option2" value="2" selected="selected"></option>
+				<option class="option3" value="3"></option>
+				<option class="option4" value="4"></option>
+				<option class="option5" value="5"></option>
 			</select>
 		</div>
-		<input id="saveButton" type="button" data-icon="plus" data-iconpos="right" value="Save Settings" data-mini="true" onclick="saveSettings();">
+		<button id="saveButton" data-icon="plus" data-iconpos="right" data-mini="true" onclick="saveSettings();"></button>
 		<div>MemorizeMe v0.2 by Frank Lockerman</div>
 	</div>
 

@@ -14,42 +14,46 @@
 	<script src="assets/js/verseapp.js"></script>
 	<script type="application/javascript">
 		$(window).load(function () {
-			//start the app up!
-			initializeApp();
-			
-			//event handlers for buttons
-			$("#menu_Edit").click(function () {
-				localStorage.editVerse = verseNumber;
-				window.location = "editVerse.html";
-			});
+			//process localization before loading content
+			$(document).on("localize", function (e){
+				initializeApp();
 
-			/*$("#menu_Share").click(function () {
+				//event handlers for buttons
+				$("#menu_Edit").click(function () {
+					localStorage.editVerse = verseNumber;
+					window.location = "editVerse.html";
+				});
+
+				/*$("#menu_Share").click(function () {
 				//
 			});*/
-			$("#menu_move_verse").click(function () {
-				if (localStorage.currentSection != "working") {
-					resetCorrect();
-					moveVerse("working");
-				} else if (localStorage.currentSection == "working") {
-					moveVerse("all");
-				}
-				$('#popupMenu').popup("close");
-			});
-			/*
+				$("#menu_move_verse").click(function () {
+					if (localStorage.currentSection != "working") {
+						resetCorrect();
+						moveVerse("working");
+					} else if (localStorage.currentSection == "working") {
+						moveVerse("all");
+					}
+					$('#popupMenu').popup("close");
+				});
+				/*
 			$("#menu_Move").click(function () {
 				//
 			});
 */
 
-			$("#menu_Delete").click(function () {
-				removeVerse(localStorage.currentPack, localStorage.currentSection, verseNumber);
-				$('#popupMenu').popup("close");
+				$("#menu_Delete").click(function () {
+					removeVerse(localStorage.currentPack, localStorage.currentSection, verseNumber);
+					$('#popupMenu').popup("close");
+				});
 			});
+			localize("home");
 		});
 
 		function showPackMenu() {
 			$("#popupPackMenu").popup('open').enhanceWithin();
 		}
+		
 	</script>
 
 	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.3.min.css">
@@ -62,7 +66,7 @@
 		<div id="headerText" class="headerText"></div>
 	</div>
 	<div id="testButtonContainer" class="testButtonContainer">
-		<button id="testButton" class="ui-btn ui-corner-all" onclick="window.location='test.html'">Test</button>
+		<button id="testButton" class="ui-btn ui-corner-all" onclick="window.location='test.html'"></button>
 	</div>
 
 	<!-- Main App -->
@@ -70,28 +74,35 @@
 		<div class="versecontainer" id="versecontainer"></div>
 		<div data-role="popup" id="popupMenu" data-theme="a">
 			<ul data-role="listview" data-inset="true" style="min-width:210px;">
-				<li data-role="list-divider">Verse Menu</li>
-				<li><a id="menu_Edit">Edit Verse</a>
+				<li id="verse_menu" data-role="list-divider"></li>
+				<li>
+					<a id="menu_Edit"></a>
 				</li>
-				<li><a id="menu_Share">Share Verse</a>
+				<li>
+					<a id="menu_Share"></a>
 				</li>
 				<li>
 					<a id="menu_move_verse"></a>
 				</li>
-				<li><a id="menu_MovePacks">Move Packs</a>
+				<li>
+					<a id="menu_MovePacks"></a>
 				</li>
-				<li><a id="menu_Delete">Delete Verse</a>
+				<li>
+					<a id="menu_Delete"></a>
 				</li>
 			</ul>
 		</div>
 		<div data-role="popup" id="popupPackMenu" data-theme="a">
 			<ul data-role="listview" data-inset="true" style="min-width:210px;">
-				<li data-role="list-divider" style="text-align: center;">Pack Menu</li>
-				<li><a id="menu_Edit" onclick="window.location = 'choosePack.html'">Change Pack</a>
+				<li id="pack_menu" data-role="list-divider" style="text-align: center;"></li>
+				<li>
+					<a id="pack_choose" onclick="window.location = 'choosePack.html'"></a>
 				</li>
-				<li><a id="menu_Share" onclick="window.location = 'addPack.html'">Add a Pack</a>
+				<li>
+					<a id="pack_add" onclick="window.location = 'addPack.html'"></a>
 				</li>
-				<li><a id="menu_Move" onclick="window.location = 'removePack.html'">Remove a Pack</a>
+				<li>
+					<a id="pack_remove" onclick="window.location = 'removePack.html'"></a>
 				</li>
 			</ul>
 		</div>
@@ -103,27 +114,27 @@
 		<button class="ui-btn navbtn" id="knownButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('known')">
 			<img src="assets/img/known.png" class="navimg" />
 			<br>
-			<span class="navtext">Known</span>
+			<span id="1" class="navtext"></span>
 		</button>
 		<button class="ui-btn navbtn" id="workingButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('working')">
 			<img src="assets/img/working.png" class="navimg" />
 			<br>
-			<span class="navtext">Working</span>
+			<span id="2" class="navtext"></span>
 		</button>
 		<button class="ui-btn navbtn" id="allButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('all')">
 			<img src="assets/img/all.png" class="navimg" />
 			<br>
-			<span class="navtext navbtn">All</span>
+			<span id="3" class="navtext navbtn"></span>
 		</button>
 		<button class="ui-btn navbtn" id="packsButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="showPackMenu()">
 			<img src="assets/img/pack.png" class="navimg" />
 			<br>
-			<span class="navtext">Packs</span>
+			<span id="4" class="navtext"></span>
 		</button>
 		<button class="ui-btn navbtn" id="settingsButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="window.location='settings.html';">
 			<img src="assets/img/settings.png" class="navimg" />
 			<br>
-			<span class="navtext">Settings</span>
+			<span id="5" class="navtext"></span>
 		</button>
 	</div>
 

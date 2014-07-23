@@ -16,8 +16,10 @@
 		var pack = localStorage.currentPack;
 		var ident = localStorage.editVerse;
 		var obj = JSON.parse(localStorage[pack]); //get the pack out
+		var local = JSON.parse(localStorage.localization);
 
 		$(document).ready(function () {
+			localize();
 			for (var key in obj['data']) {
 				if (obj["data"][key].id == ident) {
 					$("#verseInput").html(obj["data"][key].text);
@@ -40,16 +42,21 @@
 			//
 			window.location = "index.html";
 		}
+		
+		function localize(){
+		$("#1").html(local["editVerse"]["1"]);
+		$("#addButton").html(local["editVerse"]["2"]);
+		}
 	</script>
 </head>
 
 <body>
-	<h3 style="text-align: center; text-decoration: underline">Edit a Verse</h3>
+	<h3 id="1" style="text-align: center; text-decoration: underline"></h3>
 	<form style="padding-left: 5px; padding-right: 5px;">
 		<textarea cols="20" rows="4" id="verseInput"></textarea>
 		<input type="text" id="referenceInput" value="">
 		<input type="text" id="versionInput" value="">
-		<input id="addButton" type="button" value="Finished Editing" onclick="addVerse()">
+		<button id="addButton" type="button" onclick="addVerse()"></button>
 	</form>
 </body>
 

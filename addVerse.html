@@ -13,6 +13,17 @@
 	<script src="assets/js/jquery.mobile-1.4.3.min.js"></script>
 	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.3.min.css">
 	<script type="application/javascript">
+		$(document).ready(function () {
+			var local = JSON.parse(localStorage.localization);
+			//Interface Buttons
+			$("#title").html(local["addVerse"]["1"]);
+			$("#verseInput").attr("placeholder", local["addVerse"]["2"]);
+			$("#referenceInput").attr("placeholder", local["addVerse"]["3"]);
+			$("#versionInput").attr("placeholder", local["addVerse"]["4"]);
+			$("#addButton").html(local["addVerse"]["5"]);
+			$("#finishedButton").html(local["addVerse"]["6"]);
+		});
+		
 		function addVerse() {
 			var name = localStorage.currentPack
 			var obj = JSON.parse(localStorage[name]);
@@ -27,13 +38,13 @@
 </head>
 
 <body>
-	<h3 style="text-align: center; text-decoration: underline">Add a Verse</h3>
+	<h3 id="title" style="text-align: center; text-decoration: underline"></h3>
 	<form style="padding-left: 5px; padding-right: 5px;">
-		<textarea cols="20" rows="4" name="verseInput" id="verseInput" placeholder="Paste or type your verse here"></textarea>
-		<input type="text" name="referenceInput" id="referenceInput" value="" placeholder="Reference (Ex: John 3:16)">
-		<input type="text" name="versionInput" id="versionInput" value="" placeholder="Bible Version (Ex: NKJV, ESV)">
-		<input id="addButton" type="button" value="Add Verse" onclick="addVerse()">
-		<input id="finishedButton" type="button" value="Finished" onclick="window.location='index.html'">
+		<textarea cols="20" rows="4" name="verseInput" id="verseInput"></textarea>
+		<input type="text" name="referenceInput" id="referenceInput" value="">
+		<input type="text" name="versionInput" id="versionInput" value="">
+		<button id="addButton" onclick="addVerse()"></button>
+		<button id="finishedButton" onclick="window.location='index.html'"></button>
 	</form>
 </body>
 

@@ -1,0 +1,77 @@
+{
+	"name": "US English",
+	"home": {
+		"1": "Known",
+		"2": "Working",
+		"3": "All",
+		"4": "Packs",
+		"5": "Settings",
+		"6": "Test",
+		"7": "Add a Verse"
+	},
+	"packMenu": {
+		"1": "Pack Menu",
+		"2": "Change Pack",
+		"3": "Add a Pack",
+		"4": "Remove a Pack"
+	},
+	"verseMenu": {
+		"1": "Verse Menu",
+		"2": "Edit Verse",
+		"3": "Share Verse",
+		"4": {
+			"1": "Move to 'Working'",
+			"2": "Remove from 'Working'"
+		},
+		"5": "Move Packs",
+		"6": "Deleve Verse"
+	},
+	"settings": {
+		"1": "Times correct to flip to know:",
+		"2": "WOL Testing Style:",
+		"3": "User Made Testing Style:",
+		"4": "Save Settings and Exit",
+		"5": "Your current language is: ",
+		"6": "Change Language",
+		"7": "Show help while Testing?",
+		"testingOptions": {
+			"1": "Question",
+			"2": "Reference",
+			"3": "Verse",
+			"4": "Fill in the Blank",
+			"5": "Random Style"
+		}
+	},
+	"addPack": {
+		"1": "Add a Pack",
+		"2": "Pack Name: (Fall Pack)",
+		"3": "Paste or type your verse here",
+		"4": "Reference (ex. John 3:16)",
+		"5": "Version: (ex. KJV)",
+		"6": "Save this Pack",
+		"7": "Return to Practice"
+	},
+	"addVerse": {
+		"1": "Add a Verse",
+		"2": "Paste or type your verse here",
+		"3": "Reference (Ex: John 3:16)",
+		"4": "Bible Version (Ex: NKJV, ESV)",
+		"5": "Add this Verse",
+		"6": "Return to Practice"
+	},
+	"choosePack": "Choose a Pack",
+	"editVerse": {
+		"1": "Edit a Verse",
+		"2": "Save Changes"
+	},
+	"removePack": {
+		"1": "Choose a Pack to Remove:",
+		"2": "Go Back"
+	},
+	"test": {
+		"1": "Swipe up to mark correct",
+		"2": "Tap the verse to reveal the answer",
+		"3": "Swipe down to mark incorrect",
+		"4": "Finish Testing"
+	}
+}
