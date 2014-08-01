@@ -11,6 +11,7 @@
 	<script src="assets/js/jquery-1.11.1.min.js"></script>
 	<script src="assets/js/jquery.mobile-1.4.3.min.js"></script>
 	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.3.min.css">
+	<link rel="stylesheet" href="assets/css/theme.css">
 	<script>
 		var jsonObject = JSON.parse(localStorage["userProfile"]); //cache the profile
 		var local = JSON.parse(localStorage.localization);
@@ -20,6 +21,7 @@
 			jsonObject["userSettings"].wolTestStyle = $("#styleWOLPack").val();
 			jsonObject["userSettings"].customTestStyle = $("#styleCustomPack").val();
 			jsonObject["userSettings"].showHelp = $("#showHelpSwitch").val();
+			localStorage.currentTheme = $("#theme").val();
 			localStorage.userProfile = JSON.stringify(jsonObject);
 			window.location = "index.html";
 		};
@@ -28,6 +30,10 @@
 			//localize the page
 			$("#language").html(local["settings"]["5"] + local["name"] +"&nbsp;&nbsp;&nbsp;&nbsp;<button disabled=''>"+local["settings"]["6"]+"</button>");
 			$("#showHelpText").html(local["settings"]["7"]);
+			
+			$("#8").html(local["settings"]["8"]);
+			$("#theme").val(localStorage.currentTheme).selectmenu("refresh");
+			
 			$("#1").html(local["settings"]["1"]);
 			$("#2").html(local["settings"]["2"]);
 			$("#3").html(local["settings"]["3"]);
@@ -37,6 +43,10 @@
 			$(".option3").html(local["settings"]["testingOptions"]["3"]);
 			$(".option4").html(local["settings"]["testingOptions"]["4"]);
 			$(".option5").html(local["settings"]["testingOptions"]["5"]);
+			
+			// apply theme
+			$("#page").removeClass("ui-page-theme-a ui-page-theme-b").addClass("ui-page-theme-" + localStorage.currentTheme);
+			$("#page").attr("data-theme", localStorage.currentTheme);
       
 			//get the current user settings
 			$("#correctSlider").val(jsonObject["userSettings"].moveToKnown).slider("refresh");
@@ -49,8 +59,20 @@
 
 <body>
 	<!-- Home -->
-	<div data-role="page" id="page1">
-		<div id="language"></div><br>
+	<div data-role="page" id="page">
+		<div id="language"></div>
+		<div class="ui-field-contain">
+			<label id="8" for="styleWOLPack"></label>
+			<select name="theme" id="theme" data-native-menu="false">
+				<option value="a" selected="selected">Default</option>
+				<option value="b">Night Mode</option>
+				<option value="c">Orange Creamsicle</option>
+				<option value="d">Purple Punch</option>
+				<option value="e">Yellow Sunrise</option>
+				<option value="f">Blue</option>
+				<option value="g">Pink Princess</option>
+			</select>
+		</div>
 		<div><span id="showHelpText"></span>&nbsp;&nbsp;&nbsp;&nbsp;<select id="showHelpSwitch" name="flip-select" data-role="flipswitch" data-mini="true">
         <option value="true" selected="">Yes</option>
         <option value="false">No</option>
@@ -79,7 +101,8 @@
 			</select>
 		</div>
 		<button id="saveButton" data-icon="plus" data-iconpos="right" data-mini="true" onclick="saveSettings();"></button>
-		<div>MemorizeMe v0.2 by Frank Lockerman</div>
+		<br>
+		<div style="text-align: center">MemorizeMe v0.3 by Frank Lockerman</div>
 	</div>
 
 </body>

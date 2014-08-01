@@ -15,7 +15,7 @@
 	<script type="application/javascript">
 		$(window).load(function () {
 			//process localization before loading content
-			$(document).on("localize", function (e){
+			$(document).on("localize", function (e) {
 				initializeApp();
 
 				//event handlers for buttons
@@ -45,99 +45,103 @@
 				$("#menu_Delete").click(function () {
 					removeVerse(localStorage.currentPack, localStorage.currentSection, verseNumber);
 					$('#popupMenu').popup("close");
+					fixHeight(0);
 				});
 			});
-			localize("home");
+			if(!localStorage.currentTheme){localStorage.currentTheme = "a";}
+			applyTheme(localStorage.currentTheme);
+			localize();
 		});
 
 		function showPackMenu() {
 			$("#popupPackMenu").popup('open').enhanceWithin();
 		}
-		
 	</script>
 
 	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.3.min.css">
 	<link rel="stylesheet" href="assets/css/verse.css">
+	<link id="theme" rel="stylesheet" href="assets/css/theme.css">
 </head>
 
 <body class="body" onload="">
-	<!-- Header -->
-	<div id="header" class="header">
-		<div id="headerText" class="headerText"></div>
-	</div>
-	<div id="testButtonContainer" class="testButtonContainer">
-		<button id="testButton" class="ui-btn ui-corner-all" onclick="window.location='test.html'"></button>
-	</div>
-
-	<!-- Main App -->
-	<div id="container" class="container">
-		<div class="versecontainer" id="versecontainer"></div>
-		<div data-role="popup" id="popupMenu" data-theme="a">
-			<ul data-role="listview" data-inset="true" style="min-width:210px;">
-				<li id="verse_menu" data-role="list-divider"></li>
-				<li>
-					<a id="menu_Edit"></a>
-				</li>
-				<li>
-					<a id="menu_Share"></a>
-				</li>
-				<li>
-					<a id="menu_move_verse"></a>
-				</li>
-				<li>
-					<a id="menu_MovePacks"></a>
-				</li>
-				<li>
-					<a id="menu_Delete"></a>
-				</li>
-			</ul>
+	<div data-role="page" id="themepage">
+		<!-- Header -->
+		<div id="header" class="header">
+			<div id="headerText" class="headerText"></div>
 		</div>
-		<div data-role="popup" id="popupPackMenu" data-theme="a">
-			<ul data-role="listview" data-inset="true" style="min-width:210px;">
-				<li id="pack_menu" data-role="list-divider" style="text-align: center;"></li>
-				<li>
-					<a id="pack_choose" onclick="window.location = 'choosePack.html'"></a>
-				</li>
-				<li>
-					<a id="pack_add" onclick="window.location = 'addPack.html'"></a>
-				</li>
-				<li>
-					<a id="pack_remove" onclick="window.location = 'removePack.html'"></a>
-				</li>
-			</ul>
+		<div id="testButtonContainer" class="testButtonContainer">
+			<button id="testButton" class="ui-btn ui-corner-all" onclick="window.location='test.html'"></button>
 		</div>
 
-	</div>
+		<!-- Main App -->
+		<div id="container" class="container">
+			<div class="versecontainer" id="versecontainer"></div>
+			<div data-role="popup" id="popupMenu" data-theme="a">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;">
+					<li id="verse_menu" data-role="list-divider"></li>
+					<li>
+						<a id="menu_Edit"></a>
+					</li>
+					<li>
+						<a id="menu_Share"></a>
+					</li>
+					<li>
+						<a id="menu_move_verse"></a>
+					</li>
+					<li>
+						<a id="menu_MovePacks"></a>
+					</li>
+					<li>
+						<a id="menu_Delete"></a>
+					</li>
+				</ul>
+			</div>
+			<div data-role="popup" id="popupPackMenu" data-theme="a">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;">
+					<li id="pack_menu" data-role="list-divider" style="text-align: center;"></li>
+					<li>
+						<a id="pack_choose" onclick="window.location = 'choosePack.html'"></a>
+					</li>
+					<li>
+						<a id="pack_add" onclick="window.location = 'addPack.html'"></a>
+					</li>
+					<li>
+						<a id="pack_remove" onclick="window.location = 'removePack.html'"></a>
+					</li>
+				</ul>
+			</div>
 
-	<!-- Footer -->
-	<div id="footer" class="footer">
-		<button class="ui-btn navbtn" id="knownButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('known')">
-			<img src="assets/img/known.png" class="navimg" />
-			<br>
-			<span id="1" class="navtext"></span>
-		</button>
-		<button class="ui-btn navbtn" id="workingButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('working')">
-			<img src="assets/img/working.png" class="navimg" />
-			<br>
-			<span id="2" class="navtext"></span>
-		</button>
-		<button class="ui-btn navbtn" id="allButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('all')">
-			<img src="assets/img/all.png" class="navimg" />
-			<br>
-			<span id="3" class="navtext navbtn"></span>
-		</button>
-		<button class="ui-btn navbtn" id="packsButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="showPackMenu()">
-			<img src="assets/img/pack.png" class="navimg" />
-			<br>
-			<span id="4" class="navtext"></span>
-		</button>
-		<button class="ui-btn navbtn" id="settingsButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="window.location='settings.html';">
-			<img src="assets/img/settings.png" class="navimg" />
-			<br>
-			<span id="5" class="navtext"></span>
-		</button>
-	</div>
+		</div>
 
+		<!-- Footer -->
+		<div id="footer" class="footer">
+			<button class="ui-btn navbtn" id="knownButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('known')">
+				<img id="knownImg" class="navimg" src="assets/img/dark/known.png" /><!-- The src of this image is a rendering bug fix where "fixHeight" is fired before the icons get painted in the window from theme() -->
+				<br>
+				<span id="1" class="navtext"></span>
+			</button>
+			<button class="ui-btn navbtn" id="workingButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('working')">
+				<img id="workingImg" class="navimg" />
+				<br>
+				<span id="2" class="navtext"></span>
+			</button>
+			<button class="ui-btn navbtn" id="allButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="changeSection('all')">
+				<img id="allImg" class="navimg" />
+				<br>
+				<span id="3" class="navtext navbtn"></span>
+			</button>
+			<button class="ui-btn navbtn" id="packsButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="showPackMenu()">
+				<img id="packImg" class="navimg" />
+				<br>
+				<span id="4" class="navtext"></span>
+			</button>
+			<button class="ui-btn navbtn" id="settingsButton" style="width: 20%; float: left; margin: 0px; 0px;" onclick="window.location='settings.html';">
+				<img id="settingsImg" class="navimg" />
+				<br>
+				<span id="5" class="navtext"></span>
+			</button>
+		</div>
+	</div>
 </body>
 
 </html>

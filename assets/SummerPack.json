@@ -1,8 +1,8 @@
 {
-	"globalPackId":"",
+	"globalPackId": "",
 	"packName": "Summer Pack",
 	"userPack": "true",
-	"author": "WOL",
+	"author": "Frank Lockerman",
 	"packId": "default",
 	"version": "",
 	"sync": "",
@@ -55,7 +55,13 @@
 			"reference": "James 1:12",
 			"id": "8",
 			"version": "HCSB"
-    }
+    },
+		{
+			"text": "A person's insight gives him patience, and his vitrue is to overlook an offense.",
+			"reference": "Proverbs 19:11",
+			"id": "9",
+			"version": "HCSB"
+		}
 	]
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.Encounter.MemorizeMe" version="0.2.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.Encounter.MemorizeMe" version="0.3.0">
 	<name>Memorize Me Beta 1</name>
 	<description>A digital scripture memory system</description>
 	<author href="http://www.franklockerman.net/memorizeme">Frank Lockerman</author>

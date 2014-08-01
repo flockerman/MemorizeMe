@@ -12,6 +12,7 @@
 	<script src="assets/js/jquery-1.11.1.min.js"></script>
 	<script src="assets/js/jquery.mobile-1.4.3.min.js"></script>
 	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.3.min.css">
+	<link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
 <body>
@@ -19,7 +20,13 @@
 	<script type="application/javascript">
 		var local = JSON.parse(localStorage.localization);
 		$(document).ready(function () {
+			// localize
 			$("#1").html(local["choosePack"]);
+
+			// apply theme
+			$("#theme").removeClass("ui-page-theme-a ui-page-theme-b").addClass("ui-page-theme-" + localStorage.currentTheme);
+			$("#theme").attr("data-theme", localStorage.currentTheme);
+
 			makePacks();
 			$("#packContainer").trigger('create').enhanceWithin();
 		});
@@ -45,8 +52,10 @@
 			}
 		}
 	</script>
-	<div id="packContainer">
-		<h3 id="1" style="text-align: center; text-decoration: underline"></h3>
+	<div id="theme" data-role="page">
+		<div id="packContainer">
+			<h3 id="1" style="text-align: center; text-decoration: underline"></h3>
+		</div>
 	</div>
 </body>
 

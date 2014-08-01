@@ -9,16 +9,14 @@
 	width: 100%;
 }
 .header {
-	background-color: #09165C;
-	color: #F2CE61;
-	font-family: Verdana, Geneva, sans-serif;
-	width: 100%;
 	height: 30px;
 	font-size: 23px;
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
-.headerText{text-align: center;}
+.headerText {
+	text-align: center;
+}
 .menu {
 	height: 22px;
 	position: absolute;
@@ -70,10 +68,9 @@
 	.navbtn {
 		padding: 11px 0px 11px 0px;
 	}
-	.header {
-		background-color: #09165C;
-		color: #F2CE61;
-		font-family: Verdana, Geneva, sans-serif;
+	.header-a,
+	.header-b,
+	.header-c {
 		width: 100%;
 		height: 30px;
 		font-size: 18px;
