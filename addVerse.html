@@ -29,7 +29,7 @@
 		});
 
 		function addVerse() {
-			var name = localStorage.currentPack
+			var name = localStorage.currentPack;
 			var obj = JSON.parse(localStorage[name]);
 			var up = JSON.parse(localStorage.userProfile);
 			obj["data"].push({
@@ -52,13 +52,13 @@
 <body>
 	<div id="theme" data-role="page">
 		<h3 id="title" style="text-align: center; text-decoration: underline"></h3>
-		<form style="padding-left: 5px; padding-right: 5px;">
+		<div style="padding-left: 5px; padding-right: 5px;">
 			<textarea cols="20" rows="4" name="verseInput" id="verseInput"></textarea>
 			<input type="text" name="referenceInput" id="referenceInput" value="">
 			<input type="text" name="versionInput" id="versionInput" value="">
 			<button id="addButton" onclick="addVerse()"></button>
 			<button id="finishedButton" onclick="window.location='index.html'"></button>
-		</form>
+		</div>
 	</div>
 </body>
 
